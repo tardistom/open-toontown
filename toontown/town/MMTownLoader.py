@@ -9,6 +9,7 @@ class MMTownLoader(TownLoader.TownLoader):
         self.streetClass = MMStreet.MMStreet
         self.musicFile = 'phase_6/audio/bgm/MM_SZ.ogg'
         self.activityMusicFile = 'phase_6/audio/bgm/MM_SZ_activity.ogg'
+        self.battleMusicFile = 'phase_6/audio/bgm/MM_BAT_bg.ogg'
         self.townStorageDNAFile = 'phase_6/dna/storage_MM_town.dna'
 
     def load(self, zoneId):

@@ -9,6 +9,7 @@ class BRTownLoader(TownLoader.TownLoader):
         self.streetClass = BRStreet.BRStreet
         self.musicFile = 'phase_8/audio/bgm/TB_SZ.ogg'
         self.activityMusicFile = 'phase_8/audio/bgm/TB_SZ_activity.ogg'
+        self.battleMusicFile = 'phase_8/audio/bgm/TB_BAT_bg.ogg'
         self.townStorageDNAFile = 'phase_8/dna/storage_BR_town.dna'
 
     def load(self, zoneId):

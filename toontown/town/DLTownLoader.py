@@ -9,6 +9,7 @@ class DLTownLoader(TownLoader.TownLoader):
         self.streetClass = DLStreet.DLStreet
         self.musicFile = 'phase_8/audio/bgm/DL_SZ.ogg'
         self.activityMusicFile = 'phase_8/audio/bgm/DL_SZ_activity.ogg'
+        self.battleMusicFile = 'phase_8/audio/bgm/DL_BAT_bg.ogg'
         self.townStorageDNAFile = 'phase_8/dna/storage_DL_town.dna'
 
     def load(self, zoneId):
