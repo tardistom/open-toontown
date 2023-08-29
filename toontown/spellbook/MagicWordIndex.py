@@ -273,6 +273,9 @@ class MaxToon(MagicWord):
         toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
         toon.b_setHp(ToontownGlobals.MaxHpLimit)
 
+        toon.b_setHoodsVisited(ToontownGlobals.Hoods)
+        toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
+
         toon.b_setMaxMoney(250)
         toon.b_setMoney(toon.maxMoney)
         toon.b_setBankMoney(toon.maxBankMoney)
