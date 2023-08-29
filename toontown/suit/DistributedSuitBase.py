@@ -11,7 +11,7 @@ from . import Suit
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import TTLocalizer
-from toontown.battle import DistributedBattle
+from toontown.battle import DistributedBattle, SuitBattleGlobals
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from . import SuitTimings
@@ -121,6 +121,15 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
 
     def getHP(self):
         return self.currHP
+    
+    def getDef(self, suitDef):
+        self.tier = SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)
+        if  self.tier <= 0:
+            suitDef = self.getActualLevel() * 3
+        else:
+            suitDef = self.getActualLevel() * 5
+            
+        return suitDef
 
     def setHP(self, hp):
         if hp > self.maxHP:

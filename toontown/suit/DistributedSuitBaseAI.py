@@ -126,6 +126,15 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
             returnValue = 1
             self.reviveFlag = 0
         return returnValue
+    
+    def getDef(self, suitDef):
+        self.tier = SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)
+        if  self.tier <= 0:
+            suitDef = self.getActualLevel() * 3
+        else:
+            suitDef = self.getActualLevel() * 5
+
+        return suitDef
 
     def getHP(self):
         return self.currHP

@@ -35,7 +35,6 @@ def getSuitVitals(name, level = -1):
     dict['level'] = getActualFromRelativeLevel(name, level)
     if dict['level'] == 11:
         level = 0
-    dict['def'] = data['def'][level]
     attacks = data['attacks']
     alist = []
     for a in attacks:
