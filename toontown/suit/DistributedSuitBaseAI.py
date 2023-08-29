@@ -47,7 +47,12 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
         self.notify.debug('Assigning level ' + str(lvl))
         if hasattr(self, 'doId'):
             self.d_setLevelDist(self.level)
-        hp = attributes['hp'][self.level]
+
+        if self.getActualLevel() >= 12:
+            hp = (self.getActualLevel() + 1) * (self.getActualLevel() + 2) + self.getActualLevel() * 1.5
+        else:
+            hp = (self.getActualLevel() + 1) * (self.getActualLevel() + 2)
+
         self.maxHP = hp
         self.currHP = hp
 
