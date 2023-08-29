@@ -51,9 +51,9 @@ class SuitBase:
          'level': self.getActualLevel()}
         self.setDisplayName(nameWLevel)
         if self.getActualLevel() >= 12:
-            self.maxHP = (self.getActualLevel() + 1) * (self.getActualLevel() + 2) + self.getActualLevel * 1.5
+            self.maxHP = (self.getActualLevel() + (SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)) + 1) * (self.getActualLevel() + 2) + self.getActualLevel * 1.5
         else:
-            self.maxHP = (self.getActualLevel() + 1) * (self.getActualLevel() + 2)
+            self.maxHP = (self.getActualLevel() + (SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)) + 1) * (self.getActualLevel() + 2)
         self.currHP = self.maxHP
 
     def getSkelecog(self):

@@ -22,7 +22,7 @@ class AIBase:
 
     def __init__(self):
         self.config = DConfig
-        __builtins__['__dev__'] = self.config.GetBool('want-dev', 0)
+        __builtins__['__dev__'] = self.config.GetBool('want-dev', 1)
         __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
         __builtins__['__execWarnings__'] = self.config.GetBool('want-exec-warnings', 0)
         logStackDump = (self.config.GetBool('log-stack-dump', (not __debug__)) or self.config.GetBool('ai-log-stack-dump', (not __debug__)))
