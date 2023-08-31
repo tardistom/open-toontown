@@ -37,6 +37,7 @@ class TownLoader(StateData.StateData):
         self.canonicalBranchZone = None
         self.placeDoneEvent = 'placeDone'
         self.townBattleDoneEvent = 'town-battle-done'
+        self.wantBattleMusic = True
         return
 
     def loadBattleAnims(self):
@@ -53,7 +54,10 @@ class TownLoader(StateData.StateData):
         self.canonicalBranchZone = ZoneUtil.getCanonicalBranchZone(zoneId)
         self.music = base.loader.loadMusic(self.musicFile)
         self.activityMusic = base.loader.loadMusic(self.activityMusicFile)
-        self.battleMusic = base.loader.loadMusic(self.battleMusicFile)
+        if self.wantBattleMusic == True:
+            self.battleMusic = base.loader.loadMusic(self.battleMusicFile)
+        else:
+            self.battleMusic = base.loader.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
         self.townBattle = TownBattle.TownBattle(self.townBattleDoneEvent)
         self.townBattle.load()
 
