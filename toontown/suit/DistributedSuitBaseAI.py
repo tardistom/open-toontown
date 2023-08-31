@@ -47,11 +47,12 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
         self.notify.debug('Assigning level ' + str(lvl))
         if hasattr(self, 'doId'):
             self.d_setLevelDist(self.level)
+        tier = SuitBattleGlobals.getSuitTier(self.getStyleName())
 
         if self.getActualLevel() >= 12:
-            hp = (self.getActualLevel() + (attributes['level'] + 1)) * (self.getActualLevel() + 2) + self.getActualLevel() * 1.5
+            hp = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2) + self.getActualLevel() * 1.5
         else:
-            hp = (self.getActualLevel() + (attributes['level'] + 1)) * (self.getActualLevel() + 2)
+            hp = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2)
 
         self.maxHP = hp
         self.currHP = hp
@@ -128,8 +129,8 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
         return returnValue
     
     def getDef(self, suitDef):
-        self.tier = SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)
-        if  self.tier <= 0:
+        tier = SuitBattleGlobals.getSuitTier(self.getStyleName())
+        if  tier <= 0:
             suitDef = self.getActualLevel() * 3
         else:
             suitDef = self.getActualLevel() * 5

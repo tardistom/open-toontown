@@ -123,8 +123,8 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
         return self.currHP
     
     def getDef(self, suitDef):
-        self.tier = SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)
-        if  self.tier <= 0:
+        tier = SuitBattleGlobals.getSuitTier(self.getStyleName())
+        if  tier <= 0:
             suitDef = self.getActualLevel() * 3
         else:
             suitDef = self.getActualLevel() * 5

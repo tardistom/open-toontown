@@ -139,8 +139,7 @@ SuitAttributes = {'f': {'name': TTLocalizer.SuitFlunky,
         'attacks': (('RubberStamp', (2, 2, 3, 3, 4), (75, 75, 75, 75, 75), (35, 35, 35, 35, 35)),
                     ('RazzleDazzle', (1, 1, 1, 1, 1), (50, 50, 50, 50, 50), (25, 20, 15, 10, 5)),
                     ('Synergy', (4, 5, 6, 7, 8), (50, 60, 70, 80, 90), (5, 10, 15, 20, 25)),
-                    ('TeeOff',
-                     (3, 3, 4, 4, 5), (50, 60, 70, 80, 90), (35, 35, 35, 35, 35)))},
+                    ('TeeOff', (3, 3, 4, 4, 5), (50, 60, 70, 80, 90), (35, 35, 35, 35, 35)))},
 
  'mm': {'name': TTLocalizer.SuitMicromanager,
         'singularname': TTLocalizer.SuitMicromanagerS,
@@ -409,6 +408,9 @@ SuitAttributes = {'f': {'name': TTLocalizer.SuitFlunky,
         'level': 7,
         'attacks': (('PowerTrip', (10, 11, 13, 15, 16), (75, 80, 85, 90, 95), (50, 50, 50, 50, 50)), 
                     ('ThrowBook', (13, 15, 17, 19, 21), (80, 85, 85, 85, 90), (50, 50, 50, 50, 50)))}} 
+                    
+
+                    
 
 ATK_TGT_UNKNOWN = 1
 ATK_TGT_SINGLE = 2
