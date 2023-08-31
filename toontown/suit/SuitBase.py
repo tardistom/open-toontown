@@ -19,6 +19,7 @@ class SuitBase:
     def __init__(self):
         self.dna = None
         self.level = 0
+        self.tier = 0
         self.maxHP = 10
         self.currHP = 10
         self.isSkelecog = 0
@@ -51,9 +52,9 @@ class SuitBase:
          'level': self.getActualLevel()}
         self.setDisplayName(nameWLevel)
         if self.getActualLevel() >= 12:
-            self.maxHP = (self.getActualLevel() + (SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)) + 1) * (self.getActualLevel() + 2) + self.getActualLevel * 1.5
+            self.maxHP = (self.getActualLevel() + (SuitBattleGlobals.getSuitTier(self.getStyleName())) + 1) * (self.getActualLevel() + 2) + self.getActualLevel * 1.5
         else:
-            self.maxHP = (self.getActualLevel() + (SuitBattleGlobals.getActualFromRelativeLevel(self.getStyleName(), self.level)) + 1) * (self.getActualLevel() + 2)
+            self.maxHP = (self.getActualLevel() + (SuitBattleGlobals.getSuitTier(self.getStyleName())) + 1) * (self.getActualLevel() + 2)
         self.currHP = self.maxHP
 
     def getSkelecog(self):

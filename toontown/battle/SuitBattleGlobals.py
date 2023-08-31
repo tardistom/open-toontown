@@ -26,6 +26,11 @@ def getActualFromRelativeLevel(name, relLevel):
     actualLevel = data['level'] + relLevel
     return actualLevel
 
+def getSuitTier(name):
+    data = SuitAttributes[name]
+    suitTier = data['level']
+    return suitTier
+
 
 def getSuitVitals(name, level = -1):
     data = SuitAttributes[name]
