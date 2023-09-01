@@ -139,6 +139,9 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
 
     def getHP(self):
         return self.currHP
+    
+    def getMaxHP(self):
+        return self.maxHP
 
     def setHP(self, hp):
         if hp > self.maxHP:

@@ -119,6 +119,9 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
     def setDNA(self, dna):
         Suit.Suit.setDNA(self, dna)
 
+    def getMaxHP(self):
+        return self.maxHP
+    
     def getHP(self):
         return self.currHP
     
