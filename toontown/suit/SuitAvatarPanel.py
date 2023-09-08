@@ -25,8 +25,9 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
         defence = avatar.getDef(self)
         corpIcon = avatar.corpMedallion.copyTo(hidden)
         corpIcon.setPosHprScale(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        wantDev = True
 
-        if not __dev__:
+        if not wantDev:
             self.head = self.frame.attachNewNode('head')
             for part in avatar.headParts:
                 copyPart = part.copyTo(self.head)
