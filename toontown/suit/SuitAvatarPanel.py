@@ -9,6 +9,8 @@ from toontown.toonbase import TTLocalizer
 from otp.avatar import AvatarPanel
 from toontown.friends import FriendsListPanel
 
+wantDev = True
+
 class SuitAvatarPanel(AvatarPanel.AvatarPanel):
     currentAvatarPanel = None
 
@@ -25,7 +27,6 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
         defence = avatar.getDef(self)
         corpIcon = avatar.corpMedallion.copyTo(hidden)
         corpIcon.setPosHprScale(0, 0, 0, 0, 0, 0, 0, 0, 0)
-        wantDev = True
 
         if not wantDev:
             self.head = self.frame.attachNewNode('head')
@@ -71,7 +72,7 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
         self.frame.destroy()
         del self.frame
         self.frame = None
-        if not __dev__:
+        if not wantDev:
             self.head.removeNode()
             del self.head
         base.localAvatar.obscureFriendsListButton(-1)
