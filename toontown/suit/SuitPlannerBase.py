@@ -144,7 +144,7 @@ class SuitPlannerBase:
       (6, 7, 8, 9),
       []],
 
-
+#-------- Cog HQ's --------
 
      [11000, #Sellbot HQ Courtyard
       3, 15, 0, 0, 0, 4,
