@@ -2025,8 +2025,6 @@ NoRewardTierZeroQuests = (101,
 RewardTierZeroQuests = ()
 PreClarabelleQuestIds = NoRewardTierZeroQuests + RewardTierZeroQuests
 QuestDict = {
-        Start,
-
 # Quest ID : ( tier, start, (questDesc), fromNpc, toNpc, reward, nextQuest, dialog )
 #__________________________________________________________________________________ Tutorial _________________________________________________________________________________
  101: (TT_TIER, Start, (CogQuest, Anywhere, 1, 'f'), Any, ToonHQ, NA, 110, DefaultDialog),
