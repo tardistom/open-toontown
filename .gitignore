@@ -20,3 +20,7 @@ venv/
 PPYTHON_PATH
 local/
 errorCode
+Play.lnk
+Open Level Editor SRC.lnk
+Open Level Editor.lnk
+-r
