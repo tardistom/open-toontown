@@ -55,7 +55,6 @@ class DistributedButterfly(DistributedObject.DistributedObject):
         self.butterfly.loadAnims({'flutter': 'phase_4/models/props/SZ_butterfly-flutter.bam',
          'glide': 'phase_4/models/props/SZ_butterfly-glide.bam',
          'land': 'phase_4/models/props/SZ_butterfly-land.bam'})
-        self.setBlend(frameBlend=True)
         index = self.doId % len(self.wingTypes)
         chosenType = self.wingTypes[index]
         node = self.butterfly.getGeomNode()

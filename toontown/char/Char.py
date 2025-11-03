@@ -212,7 +212,6 @@ class Char(Avatar.Avatar):
             else:
                 lodName = 'lodRoot'
             self.loadAnims(animDict, lodName=lodName)
-            self.setBlend(frameBlend=True)
 
         self.setHeight(height)
         self.loadDialogue(dna.name)

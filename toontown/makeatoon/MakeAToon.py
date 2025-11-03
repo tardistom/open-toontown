@@ -200,7 +200,6 @@ class MakeAToon(StateData.StateData):
         self.spotlightActor = Actor()
         self.spotlightActor.loadModel('phase_3/models/makeatoon/roomAnim_model')
         self.spotlightActor.loadAnims({'spotlightShake': 'phase_3/models/makeatoon/roomAnim_spotlightShake'})
-        self.setBlend(frameBlend=True)
         self.spotlightActor.reparentTo(render)
         self.spotlightJoint = self.spotlightActor.find('**/spotlightJoint')
         ee = DirectFrame(pos=(-1, 1, 1), frameSize=(-.01, 0.01, -.01, 0.01), frameColor=(0, 0, 0, 0.05), state='normal')

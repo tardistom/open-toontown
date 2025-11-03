@@ -804,7 +804,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.loadAnims(LegsAnimDict[legStyle], 'legs', '1000')
         self.loadAnims(LegsAnimDict[legStyle], 'legs', '500')
         self.loadAnims(LegsAnimDict[legStyle], 'legs', '250')
-        self.setBlend(frameBlend=True)
         self.findAllMatches('**/boots_short').stash()
         self.findAllMatches('**/boots_long').stash()
         self.findAllMatches('**/shoes').stash()
@@ -844,7 +843,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', '1000')
         self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', '500')
         self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', '250')
-        self.setBlend(frameBlend=True)
         if genClothes == 1 and not len(torsoStyle) == 1:
             self.generateToonClothes()
         return
@@ -872,7 +870,6 @@ class Toon(Avatar.Avatar, ToonHead):
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '1000')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
-            self.setBlend(frameBlend=True)
 
     def swapToonHead(self, headStyle, copy = 1):
         self.stopLookAroundNow()

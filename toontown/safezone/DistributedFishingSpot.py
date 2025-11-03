@@ -281,7 +281,6 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.pole = Actor.Actor()
         self.pole.loadModel(rodPath)
         self.pole.loadAnims({'cast': 'phase_4/models/props/fishing-pole-chan'})
-        self.setBlend(frameBlend=True)
         self.pole.pose('cast', 0)
         self.ptop = self.pole.find('**/joint_attachBill')
         if self.line == None:

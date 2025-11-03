@@ -145,7 +145,6 @@ class Pet(Avatar.Avatar):
          'toBall': 'phase_5.5/models/char/TT_pets-toBall',
          'walk': 'phase_5.5/models/char/TT_pets-walk',
          'walkHappy': 'phase_5.5/models/char/TT_pets-walkHappy'})
-        self.setBlend(frameBlend=True)
         self.setHeight(2)
         color = None
         colorIndex = self.style[5]
