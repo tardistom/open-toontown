@@ -620,6 +620,7 @@ class Suit(Avatar.Avatar):
         else:
             self.loadModel('phase_3.5' + filePrefix + 'mod')
         self.loadAnims(animDict)
+        self.setBlend(frameBlend=True)
         self.setSuitClothes()
 
     def generateAnimDict(self):
@@ -954,6 +955,7 @@ class Suit(Avatar.Avatar):
         self.removePart('modelRoot')
         self.loadModel(model)
         self.loadAnims(anims)
+        self.setBlend(frameBlend=True)
         self.getGeomNode().setScale(self.scale * 1.0173)
         self.generateHealthBar()
         self.generateCorporateMedallion()
