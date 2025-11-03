@@ -108,6 +108,7 @@ class InteractiveAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
             animKey = 'sad'
             animDict[animKey] = animStr
         self.trashcan.loadAnims(animDict)
+        self.setBlend(frameBlend=True)
         self.trashcan.pose('anim', 0)
         self.node = self.trashcan
         self.idleInterval = self.createIdleInterval()

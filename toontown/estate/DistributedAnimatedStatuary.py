@@ -18,6 +18,7 @@ class DistributedAnimatedStatuary(DistributedStatuary.DistributedStatuary):
         animPath = self.modelPath + self.anims[1]
         self.model.loadModel(self.modelPath + self.anims[0])
         self.model.loadAnims(dict([[self.anims[1], animPath]]))
+        self.setBlend(frameBlend=True)
         colNode = self.model.find('**/+CollisionNode')
         if self.typeIndex == 234:
             colNode.setScale(0.5)

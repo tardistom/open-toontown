@@ -158,6 +158,7 @@ class SpecialsPhoto(NodePath):
             animPath = modelPath + anims[1]
             model.loadModel(modelPath + anims[0])
             model.loadAnims(dict([[anims[1], animPath]]))
+            self.setBlend(frameBlend=True)
             frameNo = random.randint(1, 2)
             model.pose(anims[1], 1)
             model.setScale(GardenGlobals.Specials[specialsIndex]['photoScale'] * 0.1)

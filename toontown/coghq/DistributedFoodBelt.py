@@ -158,8 +158,10 @@ class DistributedFoodBelt(DistributedObject.DistributedObject, FSM.FSM, FoodBelt
             self.beltActor = Actor.Actor(self.beltActorModel)
             if self.index == 0:
                 self.beltActor.loadAnims({'idle': 'phase_12/models/bossbotHQ/food_belt1'})
+                self.setBlend(frameBlend=True)
             else:
                 self.beltActor.loadAnims({'idle': 'phase_12/models/bossbotHQ/food_belt2'})
+                self.setBlend(frameBlend=True)
             self.beltActor.reparentTo(render)
             self.beltActor.setPlayRate(self.BeltActorPlayRate, 'idle')
             mesh = self.beltActor.find('**/mesh_tide1')

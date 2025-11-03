@@ -45,6 +45,7 @@ class ZeroAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
                 animDict[animName] = fullPath
 
         self.node.loadAnims(animDict)
+        self.setBlend(frameBlend=True)
 
     def createPhaseIntervals(self):
         if self.phaseIvals:
