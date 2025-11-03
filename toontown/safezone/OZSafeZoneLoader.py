@@ -65,6 +65,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
         if self.geyserModel:
             self.geyserActor = Actor.Actor(self.geyserModel)
             self.geyserActor.loadAnims({'idle': 'phase_6/models/golf/golf_geyser'})
+            self.setBlend(frameBlend=True)
             self.geyserActor.reparentTo(render)
             self.geyserActor.setPlayRate(8.6, 'idle')
             self.geyserActor.loop('idle')
@@ -99,6 +100,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
         if self.waterfallModel:
             self.waterfallActor = Actor.Actor(self.waterfallModel)
             self.waterfallActor.loadAnims({'idle': 'phase_6/models/golf/golf_waterfall'})
+            self.setBlend(frameBlend=True)
             self.waterfallActor.reparentTo(render)
             self.waterfallActor.setPlayRate(3.5, 'idle')
             self.waterfallActor.loop('idle')
