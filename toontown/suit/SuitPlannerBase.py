@@ -157,7 +157,7 @@ class SuitPlannerBase:
       3, 15, 0, 0, 0, 4,
       (1, 5, 10, 40, 60, 80),
       (0, 0, 0, 100),
-      (7, 8, 9),
+      (6, 7, 8),
       []],
 
      [11200, #Sellbot HQ Factory Exterior

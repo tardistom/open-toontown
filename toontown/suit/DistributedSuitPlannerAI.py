@@ -32,7 +32,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
     SUIT_HOOD_INFO_TRACK = 8
     SUIT_HOOD_INFO_LVL = 9
     SUIT_HOOD_INFO_HEIGHTS = 10
-    MAX_SUIT_TYPES = 5
+    MAX_SUIT_TYPES = 6
     POP_UPKEEP_DELAY = 10
     POP_ADJUST_DELAY = 300
     PATH_COLLISION_BUFFER = 5
@@ -1141,7 +1141,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         if level == None:
             level = random.choice(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL])
         if type == None:
-            typeChoices = list(range(max(level - 4, 1), min(level, self.MAX_SUIT_TYPES) + 1))
+            typeChoices = list(range(max(level - 6, 1), min(level, self.MAX_SUIT_TYPES) + 1))
             type = random.choice(typeChoices)
         else:
             level = min(max(level, type), type + 4)
@@ -1151,7 +1151,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         for cog, SuitDict in SuitDict.items():
             if level in range((SuitDict['level'] + 1), ((SuitDict['level'] + 1) + SuitDict['levelMod'])) and type == (SuitDict['level']) and track in SuitDict['track']:
                 zoneId = self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_ZONE]
-                #print(f"{SuitDict['name']}, Old Level: {level}, Zone: {zoneId}\n")
+                print(f"{SuitDict['name']}, Old Level: {level}, Zone: {zoneId}\n")
 
                 suitHoodLvls = self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL]
                 actualLvl = SuitDict['level'] + 1
@@ -1162,7 +1162,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
 
                 level = random.choice(newLvlRange)
 
-                #print(f"{SuitDict['name']}, New Lvl: {level}, Zone: {zoneId}\nZone Lvls: {suitHoodLvls}, Suit Lvls: {lvlRange} Lvl Potentials: {newLvlRange}\n")
+                print(f"{SuitDict['name']}, New Lvl: {level}, Zone: {zoneId}\nZone Lvls: {suitHoodLvls}, Suit Lvls: {lvlRange} Lvl Potentials: {newLvlRange}\n")
         self.notify.debug('pickLevelTypeAndTrack: %d %d %s' % (level, type, track))
         return level, type, track
 
