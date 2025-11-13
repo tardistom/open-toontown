@@ -133,6 +133,11 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
             suitDef = self.getActualLevel() * 5
             
         return suitDef
+    
+    def getLvlRange(self, name):
+        name = self.getStyleName()
+        getLvlRange = SuitBattleGlobals.getLevelRange(name)
+        return getLvlRange
 
     def setHP(self, hp):
         if hp > self.maxHP:

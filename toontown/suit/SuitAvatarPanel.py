@@ -25,6 +25,7 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
         maxSuitHP = avatar.getMaxHP()
         curSuitHP = avatar.getHP()
         defence = avatar.getDef(self)
+        lvlRange = avatar.getLvlRange(avatar.dna.name)
         corpIcon = avatar.corpMedallion.copyTo(hidden)
         corpIcon.setPosHprScale(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
@@ -53,8 +54,17 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
              self.nameLabel = DirectLabel(parent=self.frame, pos=(0.0, 0, 0.35), relief=None, text=self.avName, text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.047, text_wordwrap=7.5, text_shadow=(1, 1, 1, 1))
              self.levelLabel = DirectLabel(parent=self.frame, pos=(-0.065, 0, 0.16), relief=None, text=TTLocalizer.AvatarPanelCogLevel % level, text_font=avatar.getFont(), text_align=TextNode.ACenter, text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.05, text_wordwrap=8.0)
              self.deptLabel = DirectLabel(parent=self.frame, pos=(0, 0, 0.25), relief=None, text=dept, text_font=avatar.getFont(), text_align=TextNode.ACenter, text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.05, text_wordwrap=8.0)
-             self.hpLabel = DirectLabel(parent=self.frame, pos=(-0.1, 0, 0.10), relief=None, text=TTLocalizer.AvatarPanelCogHP % (curSuitHP, maxSuitHP), text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
-             self.defLabel = DirectLabel(parent=self.frame, pos=(-0.0275, 0, 0.04), relief=None, text=TTLocalizer.AvatarPanelCogDef % defence, text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
+             if len(f'{curSuitHP} / {maxSuitHP}') == 9:
+                 self.hpLabel = DirectLabel(parent=self.frame, pos=(-0.02, 0, 0.10), relief=None, text=TTLocalizer.AvatarPanelCogHP % (curSuitHP, maxSuitHP), text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
+             elif len(f'{curSuitHP} / {maxSuitHP}') == 7:
+                 self.hpLabel = DirectLabel(parent=self.frame, pos=(-0.045, 0, 0.10), relief=None, text=TTLocalizer.AvatarPanelCogHP % (curSuitHP, maxSuitHP), text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
+             elif len(f'{curSuitHP} / {maxSuitHP}') == 5:
+                 self.hpLabel = DirectLabel(parent=self.frame, pos=(-0.075, 0, 0.10), relief=None, text=TTLocalizer.AvatarPanelCogHP % (curSuitHP, maxSuitHP), text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
+             if len(str(defence)) == 2:
+                 self.defLabel = DirectLabel(parent=self.frame, pos=(-0.0275, 0, 0.04), relief=None, text=TTLocalizer.AvatarPanelCogDef % defence, text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
+             elif len(str(defence)) == 1:
+                 self.defLabel = DirectLabel(parent=self.frame, pos=(-0.0425, 0, 0.04), relief=None, text=TTLocalizer.AvatarPanelCogDef % defence, text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale = 0.047, text_wordwrap = 7.5, text_shadow=(1, 1, 1, 1))
+             self.lvlRangeLabel = DirectLabel(parent=self.frame, pos=(-0.025, 0, -0.015), relief=None, text=TTLocalizer.AvatarPanelCogLvlRange % lvlRange, text_font=avatar.getFont(), text_align=TextNode.ACenter, text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.045, text_wordwrap=8.0)
 
         #self.closeButton = DirectButton(parent=self.frame, relief=None, pos=(0.0, 0, -0.36), text=TTLocalizer.AvatarPanelCogDetailClose, text_font=avatar.getFont(), text0_fg=Vec4(0, 0, 0, 1), text1_fg=Vec4(0.5, 0, 0, 1), text2_fg=Vec4(1, 0, 0, 1), text_pos=(0, 0), text_scale=0.05, command=self.__handleClose)
         self.closeButton = DirectButton(parent=self.frame, relief=None, image=(auxGui.find('**/CloseBtn_UP'), auxGui.find('**/CloseBtn_DN'), auxGui.find('**/CloseBtn_Rllvr')), pos=(0.14, 0, -0.33),  command=self.__handleClose)

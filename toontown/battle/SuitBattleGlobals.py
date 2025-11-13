@@ -32,6 +32,13 @@ def getSuitTier(name):
     suitTier = data['level']
     return suitTier
 
+def getLevelRange(name):
+    data = SuitAttributes[name]
+    suitMinLevel = data['level'] + 1
+    suitMaxLevel = suitMinLevel + data['levelMod']
+    suitLevelRange = list(range(suitMinLevel, suitMaxLevel + 1))
+    return suitLevelRange
+
 
 def getSuitVitals(name, level = -1):
     data = SuitAttributes[name]

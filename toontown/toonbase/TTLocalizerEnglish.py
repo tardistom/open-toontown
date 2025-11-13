@@ -1949,6 +1949,7 @@ AvatarPanelCogLevel = 'Level: %s'
 AvatarPanelCogLevelShort = 'Lvl: %s'
 AvatarPanelCogHP = 'HP: %s / %s'
 AvatarPanelCogDef = 'Defence: %s'
+AvatarPanelCogLvlRange = 'Level Range:\n %s'
 AvatarPanelCogDetailClose = lClose
 AvatarPanelDetail = 'Toon Details'
 AvatarPanelGroupInvite = 'Invite'

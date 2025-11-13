@@ -137,6 +137,11 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
 
         return suitDef
 
+    def getLvlRange(self, name):
+        name = self.getStyleName()
+        getLvlRange = SuitBattleGlobals.getLevelRange(name)
+        return getLvlRange
+    
     def getHP(self):
         return self.currHP
     
