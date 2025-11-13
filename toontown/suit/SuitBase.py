@@ -53,7 +53,7 @@ class SuitBase:
         self.setDisplayName(nameWLevel)
         tier = SuitBattleGlobals.getSuitTier(self.getStyleName())
         if self.getActualLevel() >= 12:
-            self.maxHP = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2) + self.getActualLevel * 1.5
+            self.maxHP = (float(self.getActualLevel()) + (tier + 1)) * (float(self.getActualLevel()) + 2) + float(self.getActualLevel()) * 1.5
         else:
             self.maxHP = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2)
         self.currHP = self.maxHP
