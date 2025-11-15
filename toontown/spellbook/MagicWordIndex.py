@@ -22,6 +22,22 @@ from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
 from otp.otpbase.PythonUtil import *
 
+from toontown.battle import SuitBattleGlobals
+from toontown.coghq import CogDisguiseGlobals
+from toontown.estate import GardenGlobals
+from toontown.fishing import FishGlobals
+from toontown.golf import GolfGlobals
+from toontown.quest import Quests
+from toontown.racing.KartDNA import *
+from toontown.racing import RaceGlobals
+from toontown.shtiker import CogPageGlobals
+from toontown.suit import SuitDNA
+from toontown.toon import Experience~
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+
+from toontown.toon import NPCToons
+
 from . import MagicWordConfig
 import time, random, re, json
 
@@ -176,6 +192,243 @@ class MagicWord(DirectObject):
     def handleWord(self, invoker, avId, toon, *args):
         raise NotImplementedError
 
+
+"""    
+*********************************** DEBUG TOOLS ***********************************
+"""
+
+
+class ToggleSleep(MagicWord):
+    aliases = ["sleep", "nosleep", "neversleep", "togglesleeping", "insomnia"]
+    desc = "Toggles sleeping for the target."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.d_toggleSleep()
+        return f"Toggled sleeping for {toon.getName()}."
+    
+    
+class ToggleImmortal(MagicWord):
+    aliases = ["immortal", "invincible", "invulnerable"]
+    desc = "Toggle immortal mode. This makes the Toon immune to damage."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.setImmortalMode(not toon.immortalMode)
+        return f"Toggled immortal mode for {toon.getName()}"
+    
+    
+class ToggleGhost(MagicWord):
+    aliases = ["ghost", "invisible", "spy"]
+    desc = "Toggle ghost mode."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        # 1 is for the attic, 2 enables you to see yourself other ghost toons. 0 is off.
+        toon.b_setGhostMode(2 if not toon.ghostMode else 0) # As it's primarily for moderation purposes, we set it to 2 here, or 0 if it's already on.
+        return f"Toggled ghost mode for {toon.getName()}"
+    
+
+class Teleport(MagicWord):
+    aliases = ["tp", "goto"]
+    desc = "Teleport to a specified zone."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("zoneName", str, False, '')]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.hood import ZoneUtil
+        from toontown.toonbase import ToontownGlobals
+        zoneName = args[0]
+
+        # Can add stuff like streets to this too if you wanted, but if you do you'll want it to be a valid zone on that street. eg: 2100 is invalid, but any value 2101 to 2156 is fine.
+        # so if you wanted to add a silly street key, theroetically you could do something like this: 'sillystreet': ToontownGlobals.SillyStreet +1,
+        zoneName2Id = {'ttc': ToontownGlobals.ToontownCentral,
+                       'dd': ToontownGlobals.DonaldsDock,
+                       'dg': ToontownGlobals.DaisyGardens,
+                       'mml': ToontownGlobals.MinniesMelodyland,
+                       'tb': ToontownGlobals.TheBrrrgh,
+                       'ddl': ToontownGlobals.DonaldsDreamland,
+                       'gs': ToontownGlobals.GoofySpeedway,
+                       'oz': ToontownGlobals.OutdoorZone,
+                       'aa': ToontownGlobals.OutdoorZone,
+                       'gz': ToontownGlobals.GolfZone,
+                       'sbhq': ToontownGlobals.SellbotHQ,
+                       'factory': ToontownGlobals.SellbotFactoryExt,
+                       'cbhq': ToontownGlobals.CashbotHQ,
+                       'lbhq': ToontownGlobals.LawbotHQ,
+                       'bbhq': ToontownGlobals.BossbotHQ}
+        
+        try:
+            zone = zoneName2Id[zoneName]
+        except KeyError:
+            return "Unknown zone name!"
+
+        return f"Requested to teleport {toon.getName()} to zone {zone}.", toon.doId, [ZoneUtil.getBranchLoaderName(zone), ZoneUtil.getToonWhereName(zone), "", ZoneUtil.getHoodId(zone), zone, 0]
+    
+
+class ToggleInstantKill(MagicWord):
+    aliases = ["instantkill", "instakill"]
+    desc = "Toggle the ability to instantly kill a Cog with any gag."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.setInstantKillMode(not toon.instantKillMode)
+        return f"Toggled instant-kill mode for {toon.getName()}"
+    
+    
+class Aspect2D(MagicWord):
+    aliases = ["a2d"]
+    desc = "Toggles Aspect2d."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+
+    def handleWord(self, invoker, avId, toon, *args):
+        if aspect2d.isHidden():
+            aspect2d.show()
+        else:
+            aspect2d.hide()
+            
+
+class GetAccess(MagicWord):
+    desc = "Get the access level of a target."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+    accessLevel = "MODERATOR"
+
+    def handleWord(self, invoker, avId, toon, *args):
+        return "Access level: " + str(toon.getAccessLevel())
+    
+
+class ToggleOobe(MagicWord):
+    aliases = ["oobe"]
+    desc = "Toggles the out of body experience mode, which lets you move the camera freely."
+    advancedDesc = "This Magic Word will toggle what is known as 'Out Of Body Experience' Mode, hence the name " \
+                   "'Oobe'. When this mode is active, you are able to move the camera around with your mouse- " \
+                   "though your camera will still follow your Toon."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+
+    def handleWord(self, invoker, avId, toon, *args):
+        base.oobe()
+        return "Oobe mode has been toggled."
+
+
+class ToggleRun(MagicWord):
+    aliases = ["run"]
+    desc = "Toggles run mode, which gives you a faster running speed."
+    advancedDesc = "This Magic Word will toggle Run Mode. When this mode is active, the target can run around at a " \
+                   "very fast speed."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from direct.showbase.InputStateGlobal import inputState
+        inputState.set('debugRunning', not inputState.isSet('debugRunning'))
+        return "Run mode has been toggled."
+
+
+"""    
+*********************************** TOON STATS ***********************************
+"""
+
+
+class MaxToon(MagicWord):
+    aliases = ["max", "idkfa"]
+    desc = "Maxes out the target's stats. You can provide a gag track to exclude from the target's unlocked tracks."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("missingTrack", str, False, '')]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        missingTrack = args[0]
+
+        gagTracks = [1, 1, 1, 1, 1, 1, 1]
+        if missingTrack != '':
+            try:
+                index = ('toonup', 'trap', 'lure', 'sound', 'throw',
+                         'squirt', 'drop').index(missingTrack)
+            except:
+                return 'Missing Gag track is invalid!'
+            gagTracks[index] = 0
+        toon.b_setTrackAccess(gagTracks)
+        toon.b_setMaxCarry(ToontownGlobals.MaxCarryLimit)
+
+        experience = Experience.Experience(toon.getExperience(), toon)
+        for i, track in enumerate(toon.getTrackAccess()):
+            if track:
+                experience.experience[i] = (
+                        Experience.MaxSkill - Experience.UberSkill)
+        toon.b_setExperience(experience.makeNetString())
+
+        toon.inventory.zeroInv()
+        toon.inventory.maxOutInv(filterUberGags=0, filterPaidGags=0)
+        toon.b_setInventory(toon.inventory.makeNetString())
+
+        toon.b_setMaxMoney(250)
+        toon.b_setMoney(toon.maxMoney)
+        toon.b_setBankMoney(toon.maxBankMoney)
+
+        toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+        laff = toon.getMaxHp() - toon.getHp()
+        if laff < 15:
+            laff = 15
+        toon.toonUp(laff)
+
+        toon.b_setHoodsVisited(ToontownGlobals.Hoods)
+        toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
+
+        toon.b_setCogParts([
+            CogDisguiseGlobals.PartsPerSuitBitmasks[0],
+            CogDisguiseGlobals.PartsPerSuitBitmasks[1],
+            CogDisguiseGlobals.PartsPerSuitBitmasks[2],
+            CogDisguiseGlobals.PartsPerSuitBitmasks[3],
+        ])
+        toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4 + [0])
+        toon.b_setCogTypes([7] * 4 + [0])
+
+        toon.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * 4)
+        cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
+        toon.b_setCogStatus(cogStatus * 4)
+        toon.b_setCogRadar([1] * 4)
+        toon.b_setBuildingRadar([1] * 4)
+
+        for id in toon.getQuests():
+            toon.removeQuest(id)
+        toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
+        toon.b_setRewardHistory(49, toon.getRewardHistory()[1])
+
+        allFish = TTLocalizer.FishSpeciesNames
+        fishLists = [[], [], []]
+        for genus in allFish.keys():
+            for species in range(len(allFish[genus])):
+                fishLists[0].append(genus)
+                fishLists[1].append(species)
+                fishLists[2].append(FishGlobals.getRandomWeight(genus, species))
+        toon.b_setFishCollection(*fishLists)
+        toon.b_setFishingRod(FishGlobals.MaxRodId)
+        toon.b_setFishingTrophies(list(FishGlobals.TrophyDict.keys()))
+
+        if not toon.hasKart() and simbase.wantKarts:
+            kartList = list(KartDict.keys())
+            toon.b_setKartBodyType(kartList[1])
+        toon.b_setTickets(RaceGlobals.MaxTickets)
+        maxTrophies = RaceGlobals.NumTrophies + RaceGlobals.NumCups
+        toon.b_setKartingTrophies(range(1, maxTrophies + 1))
+        
+        toon.b_setGardenStarted(True)
+        allFlowers = TTLocalizer.FlowerFunnyNames
+        flowerLists = [[], []]
+        for speciesName in allFlowers.keys():
+            for funnyName in range(len(allFlowers[speciesName])):
+                flowerLists[0].append(speciesName)
+                flowerLists[1].append(funnyName)
+        toon.b_setFlowerCollection(*flowerLists)
+        toon.b_setShovel(3)
+        toon.b_setWateringCan(3)
+        toon.b_setShovelSkill(639)
+        toon.b_setWateringCanSkill(999)
+        toon.b_setGardenTrophies(list(GardenGlobals.TrophyDict.keys()))
+
+        toon.b_setGolfHistory([600] * (GolfGlobals.MaxHistoryIndex * 2))
+
+        return "Maxed out {}'s stats.".format(toon.getName())
+
+
 class SetHP(MagicWord):
     aliases = ["hp", "setlaff", "laff"]
     desc = "Sets the target's current laff."
@@ -199,6 +452,7 @@ class SetHP(MagicWord):
         toon.b_setHp(hp)
         return "{}'s laff has been set to {}.".format(toon.getName(), hp)
 
+
 class SetMaxHP(MagicWord):
     aliases = ["maxhp", "setmaxlaff", "maxlaff"]
     desc = "Sets the target's max laff."
@@ -217,75 +471,65 @@ class SetMaxHP(MagicWord):
         toon.toonUp(maxhp)
         return "{}'s max laff has been set to {}.".format(toon.getName(), maxhp)
 
-class ToggleOobe(MagicWord):
-    aliases = ["oobe"]
-    desc = "Toggles the out of body experience mode, which lets you move the camera freely."
-    advancedDesc = "This Magic Word will toggle what is known as 'Out Of Body Experience' Mode, hence the name " \
-                   "'Oobe'. When this mode is active, you are able to move the camera around with your mouse- " \
-                   "though your camera will still follow your Toon."
-    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
 
-    def handleWord(self, invoker, avId, toon, *args):
-        base.oobe()
-        return "Oobe mode has been toggled."
-
-class ToggleRun(MagicWord):
-    aliases = ["run"]
-    desc = "Toggles run mode, which gives you a faster running speed."
-    advancedDesc = "This Magic Word will toggle Run Mode. When this mode is active, the target can run around at a " \
-                   "very fast speed."
-    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
-
-    def handleWord(self, invoker, avId, toon, *args):
-        from direct.showbase.InputStateGlobal import inputState
-        inputState.set('debugRunning', not inputState.isSet('debugRunning'))
-        return "Run mode has been toggled."
-
-class MaxToon(MagicWord):
-    aliases = ["max", "idkfa"]
-    desc = "Maxes your target toon."
+class GlobalTeleport(MagicWord):
+    aliases = ["globaltp", "tpaccess"]
+    desc = "Enables teleport access to all zones."
     execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    accessLevel = 'ADMIN'
 
     def handleWord(self, invoker, avId, toon, *args):
         from toontown.toonbase import ToontownGlobals
-        from toontown.quest import Quests
-        from toontown.suit import SuitDNA
-        from toontown.coghq import CogDisguiseGlobals
-
-        # TODO: Handle this better, like giving out all awards, set the quest tier, stuff like that.
-        # This is mainly copied from Anesidora just so I can better work on things.
-        toon.b_setTrackAccess([1, 1, 1, 1, 1, 1, 1])
-
-        toon.b_setMaxCarry(ToontownGlobals.MaxCarryLimit)
-        toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
-
-        toon.experience.maxOutExp()
-        toon.d_setExperience(toon.experience.makeNetString())
-
-        toon.inventory.maxOutInv()
-        toon.d_setInventory(toon.inventory.makeNetString())
-
-        toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
-        toon.b_setHp(ToontownGlobals.MaxHpLimit)
-
-        toon.b_setHoodsVisited(ToontownGlobals.Hoods)
+        toon.b_setHoodsVisited(ToontownGlobals.HoodsForTeleportAll)
         toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
-
-        toon.b_setMaxMoney(250)
-        toon.b_setMoney(toon.maxMoney)
-        toon.b_setBankMoney(toon.maxBankMoney)
-
-        toon.b_setQuests([])
-        toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
-        toon.b_setRewardHistory(Quests.LOOPING_FINAL_TIER, [])
-
-        toon.b_setCogParts([*CogDisguiseGlobals.PartsPerSuitBitmasks])
-        toon.b_setCogTypes([SuitDNA.suitsPerDept - 1] * 4)
-        toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
-
-        return f"Successfully maxed {toon.getName()}!"
+        return f"Enabled teleport access to all zones for {toon.getName()}."
     
+    
+class SetMaxCarry(MagicWord):
+    aliases = ["gagpouch", "pouch", "gagcapacity"]
+    desc = "Set a Toon's gag pouch size."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("pouchSize", int, True)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        pouchSize = args[0]
+
+        if pouchSize > 255 or pouchSize < 0:
+            return "Specified pouch size must be between 1 and 255."
+
+        toon.b_setMaxCarry(pouchSize)
+        return f"Set gag pouch size to {pouchSize} for {toon.getName()}"
+    
+
+class Quests(MagicWord):
+    aliases = ["quest", "tasks", "task", "toontasks"]
+    desc = "Quest manupliation"
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("command", str, True), ("index", int, False, -1)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        command = args[0]
+        index = args[1]
+        """
+        Commands:
+        - "finish": Finish a task (sets the progress to 1000), finishes all by default
+        """
+        if command == "finish":
+            if index == -1:
+                self.air.questManager.completeAllQuestsMagically(toon)
+                return "Finished all quests."
+            else:
+                if self.air.questManager.completeQuestMagically(toon, index):
+                    return f"Finished quest {index}."
+                return f"Quest {index} not found.  (Hint: Quest indexes start at 0)"
+        else:
+            return "Valid commands: \"finish\""
+
+
+"""    
+***********************   TOON INVENTORY & REWARDS *******************************
+"""
+
+
 class Inventory(MagicWord):
     # by default restock the inventory
     aliases = ['gags', 'inv']
@@ -306,6 +550,68 @@ class Inventory(MagicWord):
             toon.inventory.zeroInv()
             toon.d_setInventory(toon.inventory.makeNetString())
             return ("Zeroing inventory for " + toon.getName() + ".")
+  
+
+class SetSos(MagicWord):
+    aliases = ["sos"]
+    desc = "Sets the target's SOS cards. The default is 1 Flippy card."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("amount", int, False, 1), ("name", str, False, 'Flippy')]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        amt = args[0]
+        name = args[1]
+
+        if not 0 <= amt <= 100:
+            return "The amount must be between 0 and 100!"
+
+        for npcId, npcName in TTLocalizer.NPCToonNames.items():
+            if name.lower() == npcName.lower():
+                if npcId not in NPCToons.npcFriends:
+                    continue
+                break
+        
+        else:
+            return "The {0} SOS card was not found!".format(name)
+
+        if (amt == 0) and (npcId in invoker.NPCFriendsDict):
+            del toon.NPCFriendsDict[npcId]
+        else:
+            toon.NPCFriendsDict[npcId] = amt
+        toon.d_setNPCFriendsDict(toon.NPCFriendsDict)
+        return "Restocked {0} {1} SOS cards successfully!".format(amt, npcName)
+
+
+class SetUnites(MagicWord):
+    aliases = ["unites", "restockunites"]
+    desc = "Restocks the target's unites. The default amount is 999."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("amount", int, False, 999)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        amt = args[0]
+        if not 1 <= amt <= 999:
+            return "Unite amount must be between 0 and 999!"
+        toon.restockAllResistanceMessages(amt)
+        return "Restocked " + str(amt) + " unites successfully!"
+
+
+class RestockSummons(MagicWord):
+    desc = "Restock all of the target's CJ summons."
+    aliases = ["summons"]
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        # Make sure we have every cog in our Cog Page.
+        cogCount = []
+        for deptIndex in range(5):
+            for cogIndex in range(9):
+                cogCount.append(CogPageGlobals.COG_QUOTAS[1][cogIndex] if cogIndex != 8 else 0)
+        invoker.b_setCogCount(cogCount)
+        invoker.b_setCogStatus(([CogPageGlobals.COG_COMPLETE2] * 8 + [0]) * 5)
+        invoker.restockAllCogSummons()
+        return "Restocked all cog summons successfully!"
+
 
 class SetPinkSlips(MagicWord):
     # this command gives the target toon the specified amount of pink slips
@@ -318,16 +624,263 @@ class SetPinkSlips(MagicWord):
     def handleWord(self, invoker, avId, toon, *args):
         toon.b_setPinkSlips(args[0])
         return f"Gave {toon.getName()} {args[0]} pink slips!" 
-    
-class AbortMinigame(MagicWord):
-    aliases = ["exitgame", "exitminigame", "quitgame", "quitminigame", "skipgame", "skipminigame"]
-    desc = "Aborts an ongoing minigame."
-    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
-    arguments = []
+
+
+"""    
+*********************************** COG SPAWNS ***********************************
+"""
+
+
+class SpawnInvasion(MagicWord):
+    aliases = ["invasion"]
+    desc = "Spawn an invasion on the current AI if one doesn't exist."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("command", str, True), ("suit", str, False, "f"), ("amount", int, False, 1000), ("skelecog", bool, False, False)]
 
     def handleWord(self, invoker, avId, toon, *args):
-        messenger.send("minigameAbort")
-        return "Requested minigame abort."  
+        cmd = args[0]
+        name = args[1]
+        num = args[2]
+        skeleton = args[3]
+
+        if not 10 <= num <= 25000:
+            return "Can't the invasion amount to {}! Specify a value between 10 and 25,000.".format(num)
+
+        invMgr = simbase.air.suitInvasionManager
+        if cmd == 'start':
+            if invMgr.getInvading():
+                return "There is already an invasion on the current AI!"
+            if not name in SuitDNA.suitHeadTypes:
+                return "This cog does not exist!"
+            invMgr.startInvasion(name, num, skeleton)
+        elif cmd == 'stop':
+            if not invMgr.getInvading():
+                return "There is no invasion on the current AI!"
+            #elif invMgr.undergoingMegaInvasion:
+            #    return "The current invasion is a mega invasion, you must stop the holiday to stop the invasion."
+            invMgr.stopInvasion()
+        else:
+            return "You didn't enter a valid command! Commands are ~invasion start or stop."
+        
+
+class InvasionStatus(MagicWord):
+    desc = "Returns the number of cogs remaining in an invasion."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        invasionMgr = simbase.air.suitInvasionManager
+
+        if not invasionMgr.getInvading():
+            return "There is no invasion in progress!"
+
+        invadingCog = invasionMgr.getInvadingCog()
+        simbase.air.newsManager.sendUpdateToAvatarId(invoker.getDoId(), 'setInvasionStatus', [
+            ToontownGlobals.SuitInvasionUpdate, invadingCog[0], invasionMgr.numSuits, invadingCog[1]])
+        
+
+class SpawnBuilding(MagicWord):
+    aliases = ["building", "spawnbldg", "bldg"]
+    desc = "Spawns a Cog Building with the given suit index."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("suitName", str, True)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        suitName = args[0]
+
+        try:
+            suitIndex = SuitDNA.suitHeadTypes.index(suitName)
+        except:
+            return "Invalid Cog specified.".format(suitName)
+        returnCode = invoker.doBuildingTakeover(suitIndex)
+        if returnCode[0] == 'success':
+            return "Successfully spawned building with Cog '{0}'!".format(suitName)
+        return "Couldn't spawn building with Cog '{0}'.".format(suitName)
+    
+
+"""    
+*********************************** COSMETICS ***********************************
+"""
+
+
+class SetHat(MagicWord):
+    aliases = ["hat"]
+    desc = "Set hat of target toon."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("id", int, True), ("textureId", int, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        hatId = args[0]
+        hatTex = args[1]
+
+        if hatId == 58:
+            return "Invalid hat specified."
+        if not 0 <= hatId <= 60:
+            return "Invalid hat specified."
+        if not 0 <= hatTex <= 40:
+            return "Invalid hat texture specified."
+        toon.b_setHat(hatId, hatTex, 0)
+
+    
+class SetGlasses(MagicWord):
+    aliases = ["glasses"]
+    desc = "Set glasses of target toon."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("id", int, True), ("textureId", int, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        glassesId = args[0]
+        glassesTex = args[1]
+
+        if not 0 <= glassesId <= 24:
+            return "Invalid glasses specified."
+        if not 0 <= glassesTex <= 25:
+            return "Invalid glasses texture specified."
+        toon.b_setGlasses(glassesId, glassesTex, 0)
+
+
+class SetBackpack(MagicWord):
+    aliases = ["backpack"]
+    desc = "Set backpack of target toon."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("id", int, True), ("textureId", int, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        bpId = args[0]
+        bpTex = args[1]
+
+        if not 0 <= bpId <= 26:
+            return "Invalid backpack specified."
+        if not 0 <= bpTex <= 22:
+            return "Invalid backpack texture specified."
+        toon.b_setBackpack(bpId, bpTex, 0)
+
+
+class SetShoes(MagicWord):
+    aliases = ["shoes"]
+    desc = "Set shoes of target toon."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("id", int, True), ("textureId", int, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        shoesId = args[0]
+        shoesTex = args[1]
+
+        if not 0 <= shoesId <= 3:
+            return "Invalid shoe type specified."
+        if (shoesTex == 54 and not __debug__) or not 0 <= shoesTex <= 54:
+            return "Invalid shoe specified."
+        toon.b_setShoes(shoesId, shoesTex, 0)
+
+
+class ClearAccessories(MagicWord):
+    aliases = ["removeallaccessories", "removeaccessories"]
+    desc = "Clear's all the accessories of the target."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.b_setHat(0, 0, 0)
+        toon.b_setGlasses(0, 0, 0)
+        toon.b_setBackpack(0, 0, 0)
+        toon.b_setShoes(0, 0, 0)
+        return "Cleared the target's accessories."
+    
+
+class SetGM(MagicWord):
+    aliases = ["icon", "seticon", "gm", "gmicon", "setgmicon"]
+    desc = "Sets the GM icon on the target."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("iconRequest", int, False, 0),]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.toonbase import TTLocalizer
+
+        iconRequest = args[0]
+        if iconRequest > len(TTLocalizer.GM_NAMES) or iconRequest < 0:
+            return "Invalid GM icon ID!"
+        
+        toon.b_setGM(0) # Reset it first, otherwise the Toon keeps the old icon, but the name still changes.
+        toon.b_setGM(iconRequest)
+        return f"GM icon set to {iconRequest} for {toon.getName()}"
+    
+
+"""    
+*********************************** EVENT MANAGEMENT ***********************************
+"""
+
+
+class Fireworks(MagicWord):
+    aliases = ["firework"]
+    desc = "Starts a firework show."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("name", str, False, "newyear"), ("hood", str, False, "")]
+
+    # List of firework shows currently in progress
+    fireworkShows = {}
+
+    def handleWord(self, invoker, avId, toon, *args):
+        name = args[0]
+        hood = args[1]
+
+        from toontown.toonbase import ToontownGlobals
+        from toontown.parties import PartyGlobals
+        name2showId = {
+            'newyear': ToontownGlobals.NEWYEARS_FIREWORKS,
+            'newyears': ToontownGlobals.NEWYEARS_FIREWORKS,
+            'summer': ToontownGlobals.JULY4_FIREWORKS,
+            'combo': ToontownGlobals.COMBO_FIREWORKS,
+            'party': PartyGlobals.FireworkShows.Summer
+        }
+
+        if name not in name2showId:
+            return f"Unknown firework name \"{name}\".  Valid names: {list(name2showId.keys())}"
+        showId = name2showId[name]
+
+        zoneToStyleDict = {
+        ToontownGlobals.DonaldsDock : 5,
+        ToontownGlobals.ToontownCentral : 0,
+        ToontownGlobals.TheBrrrgh : 4,
+        ToontownGlobals.MinniesMelodyland : 3,
+        ToontownGlobals.DaisyGardens : 1,
+        ToontownGlobals.OutdoorZone : 0,
+        ToontownGlobals.GoofySpeedway : 0,
+        ToontownGlobals.DonaldsDreamland : 2
+        }
+        
+        from toontown.hood import ZoneUtil
+        zones = []
+        if not hood:
+            zones = (toon.zoneId,)
+        elif hood == "all":
+            zones = zoneToStyleDict.keys()
+        else:
+            return "Missing hood argument."
+        
+        # Generate our firework shows
+        from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
+        count = 0
+        for zone in zones:
+            if zone not in self.fireworkShows:
+                show = DistributedFireworkShowAI(self.air, self)
+                show.generateWithRequired(zone)
+                self.fireworkShows[zone] = show
+                show.d_startShow(showId, zoneToStyleDict.get(zone, 0))
+                count += 1
+        
+        return f"Started firework {'show' if count == 1 else 'shows'} in {count} {'zone' if count == 1 else 'zones'}!"
+    
+    def stopShow(self, zoneId):
+        if zoneId in self.fireworkShows:
+            show = self.fireworkShows[zoneId]
+            show.requestDelete()
+            del self.fireworkShows[zoneId]
+
+
+
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.b_setPinkSlips(args[0])
+        return f"Gave {toon.getName()} {args[0]} pink slips!" 
+    
 
 class SkipMiniGolfHole(MagicWord):
     aliases = ["skipgolfhole", "skipgolf", "skiphole"]
@@ -353,6 +906,7 @@ class SkipMiniGolfHole(MagicWord):
 
         return "Skipped the current hole."
     
+
 class AbortGolfCourse(MagicWord):
     aliases = ["abortminigolf", "abortgolf", "abortcourse", "leavegolf", "leavecourse"]
     desc = "Aborts the current golf course."
@@ -373,6 +927,7 @@ class AbortGolfCourse(MagicWord):
         course.setCourseAbort()
 
         return "Aborted golf course."
+
 
 class Minigame(MagicWord):
     aliases = ["mg"]
@@ -451,30 +1006,19 @@ class Minigame(MagicWord):
             return retStr + "."
         
         return f"Unknown command or minigame \"{command}\".  Valid commands: \"teleport\", \"request\", or a minigame to automatically teleport or request"
+    
 
-class Quests(MagicWord):
-    aliases = ["quest", "tasks", "task", "toontasks"]
-    desc = "Quest manupliation"
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = [("command", str, True), ("index", int, False, -1)]
+class AbortMinigame(MagicWord):
+    aliases = ["exitgame", "exitminigame", "quitgame", "quitminigame", "skipgame", "skipminigame"]
+    desc = "Aborts an ongoing minigame."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+    arguments = []
 
     def handleWord(self, invoker, avId, toon, *args):
-        command = args[0]
-        index = args[1]
-        """
-        Commands:
-        - "finish": Finish a task (sets the progress to 1000), finishes all by default
-        """
-        if command == "finish":
-            if index == -1:
-                self.air.questManager.completeAllQuestsMagically(toon)
-                return "Finished all quests."
-            else:
-                if self.air.questManager.completeQuestMagically(toon, index):
-                    return f"Finished quest {index}."
-                return f"Quest {index} not found.  (Hint: Quest indexes start at 0)"
-        else:
-            return "Valid commands: \"finish\""
+        messenger.send("minigameAbort")
+        return "Requested minigame abort."  
+
+
 
 class Factory(MagicWord):
     desc = "Quickly start a Sellbot Factory."
@@ -488,6 +1032,7 @@ class Factory(MagicWord):
         from toontown.toonbase import ToontownGlobals
         zoneId = self.air.factoryMgr.createFactory(ToontownGlobals.SellbotFactoryInt, 1 if args[0] > 0 else 0, [avId])
         return "Created factory, teleporting...", avId, ["cogHQLoader", "factoryInterior", "", ToontownGlobals.SellbotHQ, zoneId, 0]
+
 
 class BossBattle(MagicWord):
     aliases = ["boss"]
@@ -646,187 +1191,6 @@ class BossBattle(MagicWord):
         boss.requestDelete()
         self.air.deallocateZone(bossZone)
 
-class GlobalTeleport(MagicWord):
-    aliases = ["globaltp", "tpaccess"]
-    desc = "Enables teleport access to all zones."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
-    def handleWord(self, invoker, avId, toon, *args):
-        from toontown.toonbase import ToontownGlobals
-        toon.b_setHoodsVisited(ToontownGlobals.HoodsForTeleportAll)
-        toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
-        return f"Enabled teleport access to all zones for {toon.getName()}."
-    
-class Teleport(MagicWord):
-    aliases = ["tp", "goto"]
-    desc = "Teleport to a specified zone."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = [("zoneName", str, False, '')]
-
-    def handleWord(self, invoker, avId, toon, *args):
-        from toontown.hood import ZoneUtil
-        from toontown.toonbase import ToontownGlobals
-        zoneName = args[0]
-
-        # Can add stuff like streets to this too if you wanted, but if you do you'll want it to be a valid zone on that street. eg: 2100 is invalid, but any value 2101 to 2156 is fine.
-        # so if you wanted to add a silly street key, theroetically you could do something like this: 'sillystreet': ToontownGlobals.SillyStreet +1,
-        zoneName2Id = {'ttc': ToontownGlobals.ToontownCentral,
-                       'dd': ToontownGlobals.DonaldsDock,
-                       'dg': ToontownGlobals.DaisyGardens,
-                       'mml': ToontownGlobals.MinniesMelodyland,
-                       'tb': ToontownGlobals.TheBrrrgh,
-                       'ddl': ToontownGlobals.DonaldsDreamland,
-                       'gs': ToontownGlobals.GoofySpeedway,
-                       'oz': ToontownGlobals.OutdoorZone,
-                       'aa': ToontownGlobals.OutdoorZone,
-                       'gz': ToontownGlobals.GolfZone,
-                       'sbhq': ToontownGlobals.SellbotHQ,
-                       'factory': ToontownGlobals.SellbotFactoryExt,
-                       'cbhq': ToontownGlobals.CashbotHQ,
-                       'lbhq': ToontownGlobals.LawbotHQ,
-                       'bbhq': ToontownGlobals.BossbotHQ}
-        
-        try:
-            zone = zoneName2Id[zoneName]
-        except KeyError:
-            return "Unknown zone name!"
-
-        return f"Requested to teleport {toon.getName()} to zone {zone}.", toon.doId, [ZoneUtil.getBranchLoaderName(zone), ZoneUtil.getToonWhereName(zone), "", ZoneUtil.getHoodId(zone), zone, 0]
-
-class ToggleSleep(MagicWord):
-    aliases = ["sleep", "nosleep", "neversleep", "togglesleeping", "insomnia"]
-    desc = "Toggles sleeping for the target."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
-    def handleWord(self, invoker, avId, toon, *args):
-        toon.d_toggleSleep()
-        return f"Toggled sleeping for {toon.getName()}."
-    
-class ToggleImmortal(MagicWord):
-    aliases = ["immortal", "invincible", "invulnerable"]
-    desc = "Toggle immortal mode. This makes the Toon immune to damage."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
-    def handleWord(self, invoker, avId, toon, *args):
-        toon.setImmortalMode(not toon.immortalMode)
-        return f"Toggled immortal mode for {toon.getName()}"
-    
-class ToggleGhost(MagicWord):
-    aliases = ["ghost", "invisible", "spy"]
-    desc = "Toggle ghost mode."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
-    def handleWord(self, invoker, avId, toon, *args):
-        # 1 is for the attic, 2 enables you to see yourself other ghost toons. 0 is off.
-        toon.b_setGhostMode(2 if not toon.ghostMode else 0) # As it's primarily for moderation purposes, we set it to 2 here, or 0 if it's already on.
-        return f"Toggled ghost mode for {toon.getName()}"
-    
-class SetGM(MagicWord):
-    aliases = ["icon", "seticon", "gm", "gmicon", "setgmicon"]
-    desc = "Sets the GM icon on the target."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = [("iconRequest", int, False, 0),]
-
-    def handleWord(self, invoker, avId, toon, *args):
-        from toontown.toonbase import TTLocalizer
-
-        iconRequest = args[0]
-        if iconRequest > len(TTLocalizer.GM_NAMES) or iconRequest < 0:
-            return "Invalid GM icon ID!"
-        
-        toon.b_setGM(0) # Reset it first, otherwise the Toon keeps the old icon, but the name still changes.
-        toon.b_setGM(iconRequest)
-        return f"GM icon set to {iconRequest} for {toon.getName()}"
-    
-class SetMaxCarry(MagicWord):
-    aliases = ["gagpouch", "pouch", "gagcapacity"]
-    desc = "Set a Toon's gag pouch size."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = [("pouchSize", int, True)]
-
-    def handleWord(self, invoker, avId, toon, *args):
-        pouchSize = args[0]
-
-        if pouchSize > 255 or pouchSize < 0:
-            return "Specified pouch size must be between 1 and 255."
-
-        toon.b_setMaxCarry(pouchSize)
-        return f"Set gag pouch size to {pouchSize} for {toon.getName()}"
-    
-class ToggleInstantKill(MagicWord):
-    aliases = ["instantkill", "instakill"]
-    desc = "Toggle the ability to instantly kill a Cog with any gag."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
-    def handleWord(self, invoker, avId, toon, *args):
-        toon.setInstantKillMode(not toon.instantKillMode)
-        return f"Toggled instant-kill mode for {toon.getName()}"
-
-class Fireworks(MagicWord):
-    aliases = ["firework"]
-    desc = "Starts a firework show."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = [("name", str, False, "newyear"), ("hood", str, False, "")]
-
-    # List of firework shows currently in progress
-    fireworkShows = {}
-
-    def handleWord(self, invoker, avId, toon, *args):
-        name = args[0]
-        hood = args[1]
-
-        from toontown.toonbase import ToontownGlobals
-        from toontown.parties import PartyGlobals
-        name2showId = {
-            'newyear': ToontownGlobals.NEWYEARS_FIREWORKS,
-            'newyears': ToontownGlobals.NEWYEARS_FIREWORKS,
-            'summer': ToontownGlobals.JULY4_FIREWORKS,
-            'combo': ToontownGlobals.COMBO_FIREWORKS,
-            'party': PartyGlobals.FireworkShows.Summer
-        }
-
-        if name not in name2showId:
-            return f"Unknown firework name \"{name}\".  Valid names: {list(name2showId.keys())}"
-        showId = name2showId[name]
-
-        zoneToStyleDict = {
-        ToontownGlobals.DonaldsDock : 5,
-        ToontownGlobals.ToontownCentral : 0,
-        ToontownGlobals.TheBrrrgh : 4,
-        ToontownGlobals.MinniesMelodyland : 3,
-        ToontownGlobals.DaisyGardens : 1,
-        ToontownGlobals.OutdoorZone : 0,
-        ToontownGlobals.GoofySpeedway : 0,
-        ToontownGlobals.DonaldsDreamland : 2
-        }
-        
-        from toontown.hood import ZoneUtil
-        zones = []
-        if not hood:
-            zones = (toon.zoneId,)
-        elif hood == "all":
-            zones = zoneToStyleDict.keys()
-        else:
-            return "Missing hood argument."
-        
-        # Generate our firework shows
-        from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
-        count = 0
-        for zone in zones:
-            if zone not in self.fireworkShows:
-                show = DistributedFireworkShowAI(self.air, self)
-                show.generateWithRequired(zone)
-                self.fireworkShows[zone] = show
-                show.d_startShow(showId, zoneToStyleDict.get(zone, 0))
-                count += 1
-        
-        return f"Started firework {'show' if count == 1 else 'shows'} in {count} {'zone' if count == 1 else 'zones'}!"
-    
-    def stopShow(self, zoneId):
-        if zoneId in self.fireworkShows:
-            show = self.fireworkShows[zoneId]
-            show.requestDelete()
-            del self.fireworkShows[zoneId]
 
 
 # Instantiate all classes defined here to register them.
