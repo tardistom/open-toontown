@@ -13,12 +13,12 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 import random
 MAX_AVATARS = 6
-POSITIONS = (Vec3(-0.840167, 0, 0.359333),
- Vec3(0.00933349, 0, 0.306533),
- Vec3(0.862, 0, 0.3293),
- Vec3(-0.863554, 0, -0.445659),
- Vec3(0.00999999, 0, -0.5181),
- Vec3(0.864907, 0, -0.445659))
+POSITIONS = (Vec3(-0.87, 0, 0.37), #red
+ Vec3(0.01, 0, 0.31), #green
+ Vec3(0.905, 0, 0.341), #purple
+ Vec3(-0.90, 0, -0.453), #blue
+ Vec3(0.01, 0, -0.54), #pink
+ Vec3(0.895, 0, -0.465)) #yellow
 COLORS = (Vec4(0.917, 0.164, 0.164, 1),
  Vec4(0.152, 0.75, 0.258, 1),
  Vec4(0.598, 0.402, 0.875, 1),

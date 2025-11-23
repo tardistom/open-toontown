@@ -49,7 +49,7 @@ class FishPicker(DirectScrolledList):
         self.fishGui.reparentTo(self, -1)
         self.fishGui.setPos(0.63, 0.1, -0.1)
         self.fishGui.setScale(0.035)
-        self.info = DirectLabel(parent=self, relief=None, text='', text_scale=0.055, pos=(0.18, 0, -0.67))
+        self.info = DirectLabel(parent=self, relief=None, text='', text_scale=0.055, pos=(0.18, 0, -0.67), text_font=ToontownGlobals.getSchtickerFont())
         self.fishPanel = FishPanel.FishPanel(parent=self)
         self.fishPanel.setSwimBounds(-0.3, 0.3, -0.235, 0.25)
         self.fishPanel.setSwimColor(1.0, 1.0, 0.74901, 1.0)
@@ -113,7 +113,7 @@ class FishPicker(DirectScrolledList):
             self.hideFishPanel()
 
     def makeFishButton(self, fish):
-        return DirectScrolledListItem(parent=self, relief=None, text=fish.getSpeciesName(), text_scale=0.07, text_align=TextNode.ALeft, text1_fg=Vec4(1, 1, 0, 1), text2_fg=Vec4(0.5, 0.9, 1, 1), text3_fg=Vec4(0.4, 0.8, 0.4, 1), command=self.showFishPanel, extraArgs=[fish])
+        return DirectScrolledListItem(parent=self, relief=None, text=fish.getSpeciesName(), text_font=ToontownGlobals.getSchtickerFont(), text_scale=0.07, text_align=TextNode.ALeft, text1_fg=Vec4(1, 1, 0, 1), text2_fg=Vec4(0.5, 0.9, 1, 1), text3_fg=Vec4(0.4, 0.8, 0.4, 1), command=self.showFishPanel, extraArgs=[fish])
 
     def showFishPanel(self, fish):
         self.fishPanel.update(fish)

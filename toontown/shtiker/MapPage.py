@@ -76,6 +76,7 @@ class MapPage(ShtikerPage.ShtikerPage):
             text=TTLocalizer.MapPageBackToPlayground,
             text_scale=TTLocalizer.MPsafeZoneButton,
             text_pos=(0, -0.02),
+            text_font=ToontownGlobals.getSchtickerFont(), 
             textMayChange=0,
             command=self.backToSafeZone)
         self.goHomeButton = DirectButton(
@@ -87,6 +88,7 @@ class MapPage(ShtikerPage.ShtikerPage):
             text=TTLocalizer.MapPageGoHome,
             text_scale=TTLocalizer.MPgoHomeButton,
             text_pos=(0, -0.02),
+            text_font=ToontownGlobals.getSchtickerFont(),
             textMayChange=0,
             command=self.goHome)
         self.goHomeButton.hide()
@@ -94,10 +96,11 @@ class MapPage(ShtikerPage.ShtikerPage):
         self.hoodLabel = DirectLabel(
             parent=self.map,
             relief=None,
-            pos=(-0.43, 0, -0.726),
+            pos=(-0.43, 0, -0.686),
             text='',
             text_scale=TTLocalizer.MPhoodLabel,
             text_pos=(0, 0),
+            text_font=ToontownGlobals.getSchtickerFont(),
             text_wordwrap=TTLocalizer.MPhoodLabelWordwrap)
         self.hoodLabel.hide()
         cloudModel = loader.loadModel('phase_3.5/models/gui/cloud')

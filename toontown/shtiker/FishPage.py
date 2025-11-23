@@ -51,14 +51,14 @@ class FishPage(ShtikerPage.ShtikerPage):
         trophyCase.find('glass1').reparentTo(trophyCase, -1)
         trophyCase.find('shelf').reparentTo(trophyCase, -1)
         self.trophyCase = trophyCase
-        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65))
+        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65), text_font=ToontownGlobals.getSchtickerFont())
         normalColor = (1, 1, 1, 1)
         clickColor = (0.8, 0.8, 0, 1)
         rolloverColor = (0.15, 0.82, 1.0, 1)
         diabledColor = (1.0, 0.98, 0.15, 1)
-        self.tankTab = DirectButton(parent=self, relief=None, text=TTLocalizer.FishPageTankTab, text_scale=TTLocalizer.FPtankTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[FishPage_Tank], pos=(0.92, 0, 0.55))
-        self.collectionTab = DirectButton(parent=self, relief=None, text=TTLocalizer.FishPageCollectionTab, text_scale=TTLocalizer.FPcollectionTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[FishPage_Collection], pos=(0.92, 0, 0.1))
-        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.FishPageTrophyTab, text_scale=TTLocalizer.FPtrophyTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[FishPage_Trophy], pos=(0.92, 0, -0.3))
+        self.tankTab = DirectButton(parent=self, relief=None, text=TTLocalizer.FishPageTankTab, text_scale=TTLocalizer.FPtankTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[FishPage_Tank], pos=(0.92, 0, 0.55), text_font=ToontownGlobals.getSchtickerFont())
+        self.collectionTab = DirectButton(parent=self, relief=None, text=TTLocalizer.FishPageCollectionTab, text_scale=TTLocalizer.FPcollectionTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[FishPage_Collection], pos=(0.92, 0, 0.1), text_font=ToontownGlobals.getSchtickerFont())
+        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.FishPageTrophyTab, text_scale=TTLocalizer.FPtrophyTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[FishPage_Trophy], pos=(0.92, 0, -0.3), text_font=ToontownGlobals.getSchtickerFont())
         self.tankTab.setPos(-0.55, 0, 0.775)
         self.collectionTab.setPos(-0.13, 0, 0.775)
         self.trophyTab.setPos(0.28, 0, 0.775)
@@ -69,19 +69,19 @@ class FishPage(ShtikerPage.ShtikerPage):
             self.picker = FishPicker.FishPicker(self)
             self.picker.setPos(-0.555, 0, 0.1)
             self.picker.setScale(0.95)
-            self.rod = DirectLabel(parent=self.picker, relief=None, text='', text_align=TextNode.ALeft, text_scale=0.06, pos=(0.9, 0, -0.65))
+            self.rod = DirectLabel(parent=self.picker, relief=None, text='', text_align=TextNode.ALeft, text_scale=0.06, pos=(0.9, 0, -0.65), text_font=ToontownGlobals.getSchtickerFont())
         return
 
     def createFishBrowser(self):
         if not hasattr(self, 'browser'):
             self.browser = FishBrowser.FishBrowser(self)
             self.browser.setScale(1.1)
-            self.collectedTotal = DirectLabel(parent=self.browser, relief=None, text='', text_scale=0.06, pos=(0, 0, -0.61))
+            self.collectedTotal = DirectLabel(parent=self.browser, relief=None, text='', text_scale=0.06, pos=(0, 0, -0.61), text_font=ToontownGlobals.getSchtickerFont())
         return
 
     def createFishTrophyFrame(self):
         if not hasattr(self, 'trophyFrame'):
-            self.trophyFrame = DirectFrame(parent=self, relief=None, image=self.trophyCase, image_pos=(0, 1, 0), image_scale=0.034)
+            self.trophyFrame = DirectFrame(parent=self, relief=None, image=self.trophyCase, image_pos=(0, 1, 0), text_font=ToontownGlobals.getSchtickerFont(), image_scale=0.034)
             self.trophyFrame.hide()
             self.trophies = []
             hOffset = -0.5

@@ -115,9 +115,9 @@ class TrackPage(ShtikerPage.ShtikerPage):
             frame.setScale(0.39)
 
     def load(self):
-        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.TrackPageTitle, text_scale=0.1, pos=(0, 0, 0.65))
-        self.subtitle = DirectLabel(parent=self, relief=None, text=TTLocalizer.TrackPageSubtitle, text_scale=0.05, text_fg=(0.5, 0.1, 0.1, 1), pos=(0, 0, 0.56))
-        self.trackText = DirectLabel(parent=self, relief=None, text='', text_scale=0.05, text_fg=(0.5, 0.1, 0.1, 1), pos=(0, 0, -0.5))
+        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.TrackPageTitle, text_scale=0.1, pos=(0, 0, 0.64), text_font=ToontownGlobals.getSchtickerFont())
+        self.subtitle = DirectLabel(parent=self, relief=None, text=TTLocalizer.TrackPageSubtitle, text_scale=0.05, text_fg=(0.5, 0.1, 0.1, 1), pos=(0, 0, 0.56), text_font=ToontownGlobals.getSchtickerFont())
+        self.trackText = DirectLabel(parent=self, relief=None, text='', text_scale=0.05, text_fg=(0.5, 0.1, 0.1, 1), pos=(0, 0, -0.5), text_font=ToontownGlobals.getSchtickerFont())
         for index in range(1, MAX_FRAMES + 1):
             frame = TrackFrame(index)
             frame.reparentTo(self)
@@ -135,7 +135,7 @@ class TrackPage(ShtikerPage.ShtikerPage):
         self.endFrame.frame['text'] = TTLocalizer.TrackPageDone
         self.endFrame.frame['text_scale'] = TTLocalizer.TPendFrame
         self.endFrame.frame['image_color'] = Vec4(0.2, 0.2, 0.2, 1)
-        self.endFrame.frame['text_fg'] = (1, 1, 1, 1)
+        self.endFrame.frame['text_fg'] = (1, 1, 1, 1) 
         self.endFrame.frame['text_pos'] = (0, 0)
         self.endFrame.question.hide()
         return

@@ -54,7 +54,7 @@ class FlowerPicker(DirectScrolledList):
         self.basketGui.reparentTo(self, -2)
         self.basketGui.setPos(0.17, 0.1, 0.0)
         self.basketGui.setScale(1.25)
-        self.info = DirectLabel(parent=self, relief=None, text='', text_scale=TTLocalizer.FPinfo, pos=(0.18, 0, -0.67))
+        self.info = DirectLabel(parent=self, relief=None, text='', text_scale=TTLocalizer.FPinfo, pos=(0.18, 0, -0.67), text_font=ToontownGlobals.getSchtickerFont())
         self.flowerPanel = FlowerPanel.FlowerPanel(parent=self)
         self.flowerPanel.setSwimBounds(-0.3, 0.3, -0.235, 0.25)
         self.flowerPanel.setSwimColor(1.0, 1.0, 0.74901, 1.0)

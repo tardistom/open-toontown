@@ -114,6 +114,7 @@ ToonFont = None
 BuildingNametagFont = None
 MinnieFont = None
 SuitFont = None
+SchtickerFont = None
 
 def getToonFont():
     global ToonFont
@@ -142,6 +143,12 @@ def getSuitFont():
         SuitFont = loader.loadFont(TTLocalizer.SuitFont, pixelsPerUnit=40, spaceAdvance=0.25, lineHeight=1.0)
     return SuitFont
 
+def getSchtickerFont():
+    global SchtickerFont
+    if SchtickerFont == None:
+        SchtickerFont = loader.loadFont(TTLocalizer.SchtickerFont)
+    return SchtickerFont
+
 
 DonaldsDock = 1000
 ToontownCentral = 2000
@@ -158,6 +165,7 @@ LighthouseLane = 1300
 SillyStreet = 2100
 LoopyLane = 2200
 PunchlinePlace = 2300
+BonkersBoulevard = 2400
 WalrusWay = 3100
 SleetStreet = 3200
 PolarPlace = 3300
@@ -170,7 +178,6 @@ OakStreet = 5300
 LullabyLane = 9100
 PajamaPlace = 9200
 ToonHall = 2513
-HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
 HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace, BonkersBoulevard),
  DonaldsDock: (BarnacleBoulevard, SeaweedStreet, LighthouseLane),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),

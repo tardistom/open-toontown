@@ -2,7 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from . import ShtikerPage
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.estate import FlowerBrowser
 from toontown.estate import GardenGlobals
 from toontown.estate import FlowerPicker
@@ -56,15 +56,15 @@ class GardenPage(ShtikerPage.ShtikerPage):
         trophyCase.find('glass1').reparentTo(trophyCase, -1)
         trophyCase.find('shelf').reparentTo(trophyCase, -1)
         self.trophyCase = trophyCase
-        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65))
+        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65), text_font=ToontownGlobals.getSchtickerFont())
         normalColor = (1, 1, 1, 1)
         clickColor = (0.8, 0.8, 0, 1)
         rolloverColor = (0.15, 0.82, 1.0, 1)
         diabledColor = (1.0, 0.98, 0.15, 1)
-        self.basketTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageBasketTab, text_scale=TTLocalizer.GPbasketTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Basket], pos=(0.92, 0, 0.55))
-        self.collectionTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageCollectionTab, text_scale=TTLocalizer.GPcollectionTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Collection], pos=(0.92, 0, 0.1))
-        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageTrophyTab, text_scale=TTLocalizer.GPtrophyTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Trophy], pos=(0.92, 0, -0.3))
-        self.specialsTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageSpecialsTab, text_scale=TTLocalizer.GPspecialsTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Specials], pos=(0.92, 0, -0.3))
+        self.basketTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageBasketTab, text_scale=TTLocalizer.GPbasketTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Basket], pos=(0.92, 0, 0.55), text_font=ToontownGlobals.getSchtickerFont())
+        self.collectionTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageCollectionTab, text_scale=TTLocalizer.GPcollectionTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Collection], pos=(0.92, 0, 0.1), text_font=ToontownGlobals.getSchtickerFont())
+        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageTrophyTab, text_scale=TTLocalizer.GPtrophyTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Trophy], pos=(0.92, 0, -0.3), text_font=ToontownGlobals.getSchtickerFont())
+        self.specialsTab = DirectButton(parent=self, relief=None, text=TTLocalizer.GardenPageSpecialsTab, text_scale=TTLocalizer.GPspecialsTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[GardenPage_Specials], pos=(0.92, 0, -0.3), text_font=ToontownGlobals.getSchtickerFont())
         self.basketTab.setPos(-0.75, 0, 0.775)
         self.collectionTab.setPos(-0.33, 0, 0.775)
         self.trophyTab.setPos(0.09, 0, 0.775)
@@ -78,14 +78,14 @@ class GardenPage(ShtikerPage.ShtikerPage):
          gui.find('**/FndsLst_ScrollUp_Rllvr'),
          gui.find('**/FndsLst_ScrollUp')), decButton_relief=None, decButton_pos=(0.0, 0.0, 0.117), decButton_image1_color=Vec4(1.0, 1.0, 0.6, 1.0), decButton_image3_color=Vec4(1.0, 1.0, 0.6, 0.6), itemFrame_pos=(-0.2, 0.0, 0.05), itemFrame_relief=None, numItemsVisible=18, items=[], pos=(-0.6, 0, 0.45))
         self.gardenSpecialsList.hide()
-        self.specialsFrame = DirectFrame(parent=self, relief=None, pos=(0.45, 0.0, 0.25), text='', text_wordwrap=14.4, text_pos=(0, -0.46), text_scale=0.06)
-        self.specialsInfo = DirectLabel(parent=self.specialsFrame, relief=None, pos=(0.0, 0.0, -0.0), text=' ', text_wordwrap=12.4, text_pos=(0, -0.46), text_scale=0.06)
+        self.specialsFrame = DirectFrame(parent=self, relief=None, pos=(0.45, 0.0, 0.25), text='', text_wordwrap=14.4, text_pos=(0, -0.46), text_font=ToontownGlobals.getSchtickerFont(), text_scale=0.06)
+        self.specialsInfo = DirectLabel(parent=self.specialsFrame, relief=None, pos=(0.0, 0.0, -0.0), text=' ', text_wordwrap=12.4, text_pos=(0, -0.46), text_font=ToontownGlobals.getSchtickerFont(), text_scale=0.06)
         self.specialsPhoto = SpecialsPhoto.SpecialsPhoto(-1, parent=self.specialsFrame)
         self.specialsPhoto.setBackBounds(-0.3, 0.3, -0.235, 0.25)
         self.specialsPhoto.setBackColor(1.0, 1.0, 0.74901, 1.0)
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         okImageList = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-        self.useSpecialButton = DirectButton(parent=self, relief=None, image=okImageList, pos=(0.45, 0, -0.5), text=TTLocalizer.UseSpecial, text_scale=0.06, text_pos=(0, -0.1), command=self.__useSpecial)
+        self.useSpecialButton = DirectButton(parent=self, relief=None, image=okImageList, pos=(0.45, 0, -0.5), text=TTLocalizer.UseSpecial, text_scale=0.06, text_pos=(0, -0.1), text_font=ToontownGlobals.getSchtickerFont(), command=self.__useSpecial)
         buttons.removeNode()
         return
 
@@ -220,7 +220,7 @@ class GardenPage(ShtikerPage.ShtikerPage):
         if not hasattr(self, 'browser'):
             self.browser = FlowerBrowser.FlowerBrowser(self)
             self.browser.setScale(1.1)
-            self.collectedTotal = DirectLabel(parent=self.browser, relief=None, text='', text_scale=0.06, pos=(0, 0, -0.61))
+            self.collectedTotal = DirectLabel(parent=self.browser, relief=None, text='', text_scale=0.06, pos=(0, 0, -0.61), text_font=ToontownGlobals.getSchtickerFont())
         return
 
     def createGardenTrophyFrame(self):
@@ -375,7 +375,7 @@ class GardenTrophy(DirectFrame):
         self.bowlBase = self.bowl.find('**/fishingTrophyBase')
         self.bowlBase.setScale(1.25, 1, 1)
         self.bowlBase.setColorScale(1, 1, 0.8, 1)
-        self.nameLabel = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.15), text='Trophy Text', text_scale=0.125, text_fg=Vec4(0.9, 0.9, 0.4, 1))
+        self.nameLabel = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.15), text_font=ToontownGlobals.getSchtickerFont(), text='Trophy Text', text_scale=0.125, text_fg=Vec4(0.9, 0.9, 0.4, 1))
         self.shadow = loader.loadModel('phase_3/models/props/drop_shadow')
         self.shadow.reparentTo(self)
         self.shadow.setColor(1, 1, 1, 0.2)

@@ -27,7 +27,7 @@ class QuestPage(ShtikerPage.ShtikerPage):
         return
 
     def load(self):
-        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.QuestPageToonTasks, text_scale=0.12, textMayChange=0, pos=(0, 0, 0.6))
+        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.QuestPageToonTasks, text_scale=0.12, textMayChange=0, pos=(0, 0, 0.6), text_font=ToontownGlobals.getSchtickerFont())
         questFramePlaceList = ((-0.45,
           0,
           0.25,

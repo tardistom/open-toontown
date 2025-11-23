@@ -52,15 +52,15 @@ class KartPage(ShtikerPage):
         self.racingTrophies = RacingTrophiesUI(self.avatar, self)
         self.racingTrophies.hide()
         self.racingTrophies.load()
-        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65))
+        self.title = DirectLabel(parent=self, relief=None, text='', text_scale=0.1, pos=(0, 0, 0.65), text_font=ToontownGlobals.getSchtickerFont())
         normalColor = (1, 1, 1, 1)
         clickColor = (0.8, 0.8, 0, 1)
         rolloverColor = (0.15, 0.82, 1.0, 1)
         diabledColor = (1.0, 0.98, 0.15, 1)
         gui = loader.loadModel('phase_3.5/models/gui/fishingBook')
-        self.customizeTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageCustomizeTab, text_scale=TTLocalizer.KPkartTab, text_align=TextNode.ALeft, text_pos=(-0.025, 0.0, 0.0), image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Customize], pos=(0.92, 0, 0.55))
-        self.recordsTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageRecordsTab, text_scale=TTLocalizer.KPkartTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Records], pos=(0.92, 0, 0.1))
-        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageTrophyTab, text_scale=TTLocalizer.KPkartTab, text_pos=(0.03, 0.0, 0.0), text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Trophy], pos=(0.92, 0, -0.3))
+        self.customizeTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageCustomizeTab, text_scale=TTLocalizer.KPkartTab, text_align=TextNode.ALeft, text_pos=(-0.11, 0.0, 0.0), text_font=ToontownGlobals.getSchtickerFont(), image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.04), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Customize], pos=(0.92, 0, 0.55))
+        self.recordsTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageRecordsTab, text_scale=TTLocalizer.KPkartTab, text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), text_font=ToontownGlobals.getSchtickerFont(), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Records], pos=(0.75, 0, 0.1))
+        self.trophyTab = DirectButton(parent=self, relief=None, text=TTLocalizer.KartPageTrophyTab, text_scale=TTLocalizer.KPkartTab, text_pos=(0.03, 0.0, 0.0), text_font=ToontownGlobals.getSchtickerFont(), text_align=TextNode.ALeft, image=gui.find('**/tabs/polySurface3'), image_pos=(-0.28, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Trophy], pos=(0.92, 0, -0.3))
         self.customizeTab.setPos(-0.55, 0, 0.775)
         self.recordsTab.setPos(-0.13, 0, 0.775)
         self.trophyTab.setPos(0.28, 0, 0.775)
@@ -197,8 +197,8 @@ class RacingRecordsUI(DirectFrame):
         trackNameArray = TTLocalizer.KartRace_TrackNames
         for trackId in RaceGlobals.TrackIds:
             trackName = trackNameArray[trackId]
-            trackNameDisplay = DirectLabel(parent=self, relief=None, text=trackName, text_align=TextNode.ALeft, text_scale=0.075, text_fg=(0.95, 0.95, 0.0, 1.0), text_shadow=(0, 0, 0, 1), text_pos=(-0.8, 0.5 - offset), text_font=ToontownGlobals.getSignFont())
-            bestTimeDisplay = DirectLabel(parent=self, relief=None, text=TTLocalizer.KartRace_Unraced, text_scale=0.06, text_fg=(0.0, 0.0, 0.0, 1.0), text_pos=(0.65, 0.5 - offset), text_font=ToontownGlobals.getToonFont())
+            trackNameDisplay = DirectLabel(parent=self, relief=None, text=trackName, text_align=TextNode.ALeft, text_scale=0.075, text_fg=(0.95, 0.75, 0.0, 1.0), text_shadow=(0, 0, 0, 0), text_pos=(-0.8, 0.5 - offset), text_font=ToontownGlobals.getSchtickerFont())
+            bestTimeDisplay = DirectLabel(parent=self, relief=None, text=TTLocalizer.KartRace_Unraced, text_scale=0.06, text_fg=(0.0, 0.0, 0.0, 1.0), text_pos=(0.65, 0.5 - offset), text_font=ToontownGlobals.getSchtickerFont())
             offset += 0.1
             self.timeDisplayList.append(bestTimeDisplay)
 
@@ -251,7 +251,7 @@ class RacingTrophiesUI(DirectFrame):
         yOffset = 0.23
         for j in range(RaceGlobals.NumCups):
             for i in range(RaceGlobals.TrophiesPerCup):
-                trophyPanel = DirectLabel(parent=self, relief=None, pos=(xStart + i * xOffset, 0.0, yStart - j * yOffset), state=DGG.NORMAL, image=DGG.getDefaultDialogGeom(), image_scale=(0.75, 1, 1), image_color=(0.8, 0.8, 0.8, 1), text=TTLocalizer.SuitPageMystery[0], text_scale=0.45, text_fg=(0, 0, 0, 1), text_pos=(0, 0, -0.25), text_font=ToontownGlobals.getInterfaceFont(), text_wordwrap=5.5)
+                trophyPanel = DirectLabel(parent=self, relief=None, pos=(xStart + i * xOffset, 0.0, yStart - j * yOffset), state=DGG.NORMAL, image=DGG.getDefaultDialogGeom(), image_scale=(0.75, 1, 1), image_color=(0.8, 0.8, 0.8, 1), text=TTLocalizer.SuitPageMystery[0], text_scale=0.45, text_fg=(0, 0, 0, 1), text_pos=(0, 0, -0.25), text_font=ToontownGlobals.getSchtickerFont(), text_wordwrap=5.5)
                 trophyPanel.scale = 0.2
                 trophyPanel.setScale(trophyPanel.scale)
                 self.trophyPanels.append(trophyPanel)
@@ -260,13 +260,13 @@ class RacingTrophiesUI(DirectFrame):
         yStart = -0.38
         xOffset = 0.25
         for i in range(RaceGlobals.NumCups):
-            cupPanel = DirectLabel(parent=self, relief=None, pos=(xStart + i * xOffset, 0.0, yStart), state=DGG.NORMAL, image=DGG.getDefaultDialogGeom(), image_scale=(0.75, 1, 1), image_color=(0.8, 0.8, 0.8, 1), text=TTLocalizer.SuitPageMystery[0], text_scale=0.45, text_fg=(0, 0, 0, 1), text_pos=(0, 0, -0.25), text_font=ToontownGlobals.getInterfaceFont(), text_wordwrap=5.5)
+            cupPanel = DirectLabel(parent=self, relief=None, pos=(xStart + i * xOffset, 0.0, yStart), state=DGG.NORMAL, image=DGG.getDefaultDialogGeom(), image_scale=(0.75, 1, 1), image_color=(0.8, 0.8, 0.8, 1), text=TTLocalizer.SuitPageMystery[0], text_scale=0.45, text_fg=(0, 0, 0, 1), text_pos=(0, 0, -0.25), text_font=ToontownGlobals.getSchtickerFont(), text_wordwrap=5.5)
             cupPanel.scale = 0.3
             cupPanel.setScale(cupPanel.scale)
             self.trophyPanels.append(cupPanel)
 
-        self.ticketDisplay = DirectLabel(parent=self, relief=None, image=loader.loadModel('phase_6/models/karting/tickets'), image_pos=(0.2, 0, -0.635), image_scale=0.2, text=TTLocalizer.KartPageTickets + str(self.avatar.getTickets()), text_scale=0.07, text_fg=(0, 0, 0.95, 1.0), text_pos=(0, -0.65), text_font=ToontownGlobals.getSignFont())
-        self.trophyTextDisplay = DirectLabel(parent=self, relief=None, text='', text_scale=0.07, text_fg=(1, 0, 0, 1), text_shadow=(0, 0, 0, 0), text_pos=(0.0, -0.175), text_font=ToontownGlobals.getInterfaceFont())
+        self.ticketDisplay = DirectLabel(parent=self, relief=None, image=loader.loadModel('phase_6/models/karting/tickets'), image_pos=(0.2, 0, -0.635), image_scale=0.2, text=TTLocalizer.KartPageTickets + str(self.avatar.getTickets()), text_scale=0.07, text_fg=(0, 0, 0.95, 1.0), text_pos=(0, -0.65), text_font=ToontownGlobals.getSchtickerFont())
+        self.trophyTextDisplay = DirectLabel(parent=self, relief=None, text='', text_scale=0.07, text_fg=(1, 0, 0, 1), text_shadow=(0, 0, 0, 0), text_pos=(0.0, -0.175), text_font=ToontownGlobals.getSchtickerFont())
         self.updateTrophies()
         return
 
@@ -369,11 +369,11 @@ class ItemSelector(DirectFrame):
             tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png')
             self.uiImagePlane.component('geom0').setTexture(tex, self.texCount)
             self.texCount += 1
-            self.uiTextBox = DirectFrame(parent=self, relief=None, scale=1.0, text='', text_font=ToontownGlobals.getInterfaceFont(), text_fg=(0.5, 0, 0, 1), text_shadow=(0, 0, 0, 1), text_scale=0.0715, text_pos=(0.0, -0.23, 0.0))
+            self.uiTextBox = DirectFrame(parent=self, relief=None, scale=1.0, text='', text_font=ToontownGlobals.getSchtickerFont(), text_fg=(0.5, 0, 0, 1), text_shadow=(0, 0, 0, 0), text_scale=0.0715, text_pos=(0.0, -0.23, 0.0))
             self.deleteButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/uiAccessorydelete_up'),
              uiRootNode.find('**/uiAccessorydelete_down'),
              uiRootNode.find('**/uiAccessorydelete_rollover'),
-             uiRootNode.find('**/uiAccessorydelete_rollover')), text=TTLocalizer.KartShtikerDelete, text_font=ToontownGlobals.getSignFont(), text_pos=(0, -0.125, 0), text_scale=TTLocalizer.KPdeleteButton, text_fg=(1, 1, 1, 1), scale=1.0, pressEffect=False, command=lambda : self.__handleItemDeleteConfirm())
+             uiRootNode.find('**/uiAccessorydelete_rollover')), text=TTLocalizer.KartShtikerDelete, text_font=ToontownGlobals.getSchtickerFont(), text_pos=(0, -0.125, 0), text_scale=TTLocalizer.KPdeleteButton, text_fg=(1, 1, 1, 1), scale=1.0, pressEffect=False, command=lambda : self.__handleItemDeleteConfirm())
             self.deleteButton.hide()
             self.leftArrowButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/ArrowLeftButtonUp'),
              uiRootNode.find('**/ArrowLeftButtonDown'),
@@ -568,7 +568,7 @@ class ItemSelector(DirectFrame):
             self.notify.debug('__handleItemDeleteConfirm:')
             if not hasattr(self, 'confirmDlg'):
                 uiRootNode = loader.loadModel('phase_6/models/gui/ShtikerBookUI')
-                self.confirmDlg = DirectFrame(parent=aspect2d, relief=None, geom=uiRootNode.find('**/uiAccessoryNotice'), geom_scale=1.0, text=TTLocalizer.KartPageConfirmDelete, text_scale=0.07, text_pos=(0, 0.022))
+                self.confirmDlg = DirectFrame(parent=aspect2d, relief=None, geom=uiRootNode.find('**/uiAccessoryNotice'), geom_scale=1.0, text=TTLocalizer.KartPageConfirmDelete, text_scale=0.07, text_pos=(0, 0.022), text_font=ToontownGlobals.getSchtickerFont())
                 self.confirmDlg.hide()
                 self.confirmDlg.setPos(aspect2d, 0, -.195, -.195)
                 self.cancelButton = DirectButton(parent=self.confirmDlg, relief=None, image=(uiRootNode.find('**/CancelButtonUp'), uiRootNode.find('**/CancelButtonDown'), uiRootNode.find('**/CancelButtonRollover')), geom=uiRootNode.find('**/CancelIcon'), scale=1.0, pressEffect=False, command=self.confirmDlg.hide)
@@ -762,7 +762,7 @@ class KartViewer(DirectFrame):
         self.uiRotateRight = None
         self.uiRotateLeft = None
         self.uiRotateLabel = None
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0, 0, 0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0, 0, 0), scale=(1.0, 1.0, 1.0), text_font=ToontownGlobals.getSchtickerFont())
         return
 
     def destroy(self):
@@ -805,14 +805,14 @@ class KartViewer(DirectFrame):
             self.uiRotateLeft = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/' + leftArrow[0]),
              uiRootNode.find('**/' + leftArrow[1]),
              uiRootNode.find('**/' + leftArrow[2]),
-             uiRootNode.find('**/' + leftArrow[3])), scale=1.0, text=TTLocalizer.KartView_Left, text_scale=TTLocalizer.KProtateButton, text_pos=(leftArrow[4][0], leftArrow[4][1], 0), text_fg=(1, 1, 1, 1.0), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), pressEffect=False)
+             uiRootNode.find('**/' + leftArrow[3])), scale=1.0, text=TTLocalizer.KartView_Left, text_scale=TTLocalizer.KProtateButton, text_pos=(leftArrow[4][0], leftArrow[4][1], 0), text_fg=(1, 1, 0.6, 1.0), text_shadow=(0, 0, 0, 0), text_font=ToontownGlobals.getSchtickerFont(), pressEffect=False)
             self.uiRotateLeft.bind(DGG.B1PRESS, self.__handleKartRotate, [-3])
             self.uiRotateLeft.bind(DGG.B1RELEASE, self.__endKartRotate)
         if rightArrow and len(rightArrow) == 5:
             self.uiRotateRight = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/' + rightArrow[0]),
              uiRootNode.find('**/' + rightArrow[1]),
              uiRootNode.find('**/' + rightArrow[2]),
-             uiRootNode.find('**/' + rightArrow[3])), scale=1.0, text=TTLocalizer.KartView_Right, text_scale=TTLocalizer.KProtateButton, text_pos=(rightArrow[4][0], rightArrow[4][1], 0), text_fg=(1, 1, 1, 1.0), text_shadow=(0, 0, 0, 1), text_font=ToontownGlobals.getSignFont(), pressEffect=False)
+             uiRootNode.find('**/' + rightArrow[3])), scale=1.0, text=TTLocalizer.KartView_Right, text_scale=TTLocalizer.KProtateButton, text_pos=(rightArrow[4][0], rightArrow[4][1], 0), text_fg=(1, 1, 0.6, 1.0), text_shadow=(0, 0, 0, 0), text_font=ToontownGlobals.getSchtickerFont(), pressEffect=False)
             self.uiRotateRight.bind(DGG.B1PRESS, self.__handleKartRotate, [3])
             self.uiRotateRight.bind(DGG.B1RELEASE, self.__endKartRotate)
         return
@@ -954,7 +954,7 @@ class RacingTrophy(DirectFrame):
         self.goldBowl.setScale(2.0)
         self.goldBowlBase = self.goldBowl.find('**/fishingTrophyBase')
         self.goldBowlBase.hide()
-        self.nameLabel = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.15), text='', text_scale=0.125, text_fg=Vec4(0.9, 0.9, 0.4, 1))
+        self.nameLabel = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.15), text='', text_scale=0.125, text_fg=Vec4(0.9, 0.9, 0.4, 1), text_font=ToontownGlobals.getSchtickerFont())
         self.shadow = loader.loadModel('phase_3/models/props/drop_shadow')
         self.shadow.reparentTo(self)
         self.shadow.setColor(1, 1, 1, 0.2)

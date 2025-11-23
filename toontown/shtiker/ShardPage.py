@@ -33,12 +33,12 @@ class ShardPage(ShtikerPage.ShtikerPage):
     def load(self):
         main_text_scale = 0.06
         title_text_scale = 0.12
-        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.ShardPageTitle, text_scale=title_text_scale, textMayChange=0, pos=(0, 0, 0.6))
+        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.ShardPageTitle, text_scale=title_text_scale, textMayChange=0, pos=(0, 0, 0.6), text_font=ToontownGlobals.getSchtickerFont())
         helpText_ycoord = 0.403
-        self.helpText = DirectLabel(parent=self, relief=None, text='', text_scale=main_text_scale, text_wordwrap=12, text_align=TextNode.ALeft, textMayChange=1, pos=(0.058, 0, helpText_ycoord))
+        self.helpText = DirectLabel(parent=self, relief=None, text='', text_scale=main_text_scale, text_wordwrap=12, text_align=TextNode.ALeft, textMayChange=1, pos=(0.058, 0, helpText_ycoord), text_font=ToontownGlobals.getSchtickerFont())
         shardPop_ycoord = helpText_ycoord - 0.523
         totalPop_ycoord = shardPop_ycoord - 0.26
-        self.totalPopulationText = DirectLabel(parent=self, relief=None, text=TTLocalizer.ShardPagePopulationTotal % 1, text_scale=main_text_scale, text_wordwrap=8, textMayChange=1, text_align=TextNode.ACenter, pos=(0.38, 0, totalPop_ycoord))
+        self.totalPopulationText = DirectLabel(parent=self, relief=None, text=TTLocalizer.ShardPagePopulationTotal % 1, text_scale=main_text_scale, text_wordwrap=8, textMayChange=1, text_align=TextNode.ACenter, pos=(0.38, 0, totalPop_ycoord), text_font=ToontownGlobals.getSchtickerFont())
         if self.showPop:
             self.totalPopulationText.show()
         else:
