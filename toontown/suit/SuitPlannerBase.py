@@ -43,6 +43,13 @@ class SuitPlannerBase:
       (1, 2, 3),
       []],
 
+     [2400,  # Bonkers Boulevard
+      3, 10, 0, 5, 15, 3,
+      (1, 5, 10, 40, 60, 80),
+      (30, 60, 5, 5),
+      (2, 3, 4),
+      []],
+
 #-------- DONALD'S DOCK --------
 
      [1100, #Barnacle Boulevard

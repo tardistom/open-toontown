@@ -12,6 +12,7 @@ SuitFont = 'phase_3/models/fonts/vtRemingtonPortable.ttf'
 SignFont = 'phase_3/models/fonts/MickeyFont'
 MinnieFont = 'phase_3/models/fonts/MinnieFont.ttf'
 FancyFont = 'phase_3/models/fonts/Comedy.ttf'
+SchtickerFont = 'phase_3/models/fonts/DkCoolCrayon.ttf'
 NametagFonts = (
  'phase_3/models/fonts/AnimGothic.ttf',
  'phase_3/models/fonts/Aftershock.ttf',
@@ -90,6 +91,7 @@ GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  2100: ('to', 'on', 'Silly Street'),
  2200: ('to', 'on', 'Loopy Lane'),
  2300: ('to', 'on', 'Punchline Place'),
+ 2400: ('to', 'on', 'Bonkers Boulevard'),
  3000: ('to the', 'in the', 'Playground'),
  3100: ('to', 'on', 'Walrus Way'),
  3200: ('to', 'on', 'Sleet Street'),
@@ -4707,7 +4709,7 @@ DisplaySettingsApplyWarning = 'When you press OK, the display settings will chan
 DisplaySettingsAccept = 'Press OK to keep the new settings, or Cancel to revert.  If you do not press anything, the settings will automatically revert back in %s seconds.'
 DisplaySettingsRevertUser = 'Your previous display settings have been restored.'
 DisplaySettingsRevertFailed = 'The selected display settings do not work on your computer.  Your previous display settings have been restored.'
-OptionsPageCodesTab = 'Enter Code'
+OptionsPageCodesTab = 'Code'
 CdrPageTitle = 'Enter a Code'
 CdrInstructions = 'Enter your code to receive a special item in your mailbox.'
 CdrResultSuccess = 'Congratulations! Check your mailbox to claim your item!'
@@ -7704,7 +7706,31 @@ zone2TitleDict = {2513: ('Toon Hall', ''),
  2836: ('', ''),
  2837: ('Hardy Harr Seminars', ''),
  2839: ('Barely Palatable Pasta', ''),
- 2841: ('', ''),
+ 2901: ('Inspector Gag-Get', ''),
+ 2902: ('', ''),
+ 2903: ('', ''),
+ 2904: ('', ''),
+ 2905: ('', ''),
+ 2906: ('', ''),
+ 2907: ('', ''),
+ 2908: ('Bobo Bites', ''),
+ 2909: ('', ''),
+ 2910: ('', ''),
+ 2911: ('', ''),
+ 2912: ('', ''),
+ 2913: ('', ''),
+ 2914: ('', ''),
+ 2915: ('', ''),
+ 2916: ('', ''),
+ 2917: ('', ''),
+ 2918: ('', ''),
+ 2919: ('', ''),
+ 2920: ('', ''),
+ 2921: ('', ''),
+ 2922: ('', ''),
+ 2923: ('', ''),
+ 2924: ('', ''),
+ 2925: ('Toon Headquarters', ''),
  1506: ('Gag Shop', ''),
  1507: ('Toon Headquarters', ''),
  1508: ('Clothing Shop', ''),
