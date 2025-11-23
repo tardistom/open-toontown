@@ -66,6 +66,7 @@ ime-hide 1
 dx-management 1
 # If this is true, more accurate but more expensive fog computations are performed.
 dx-use-rangebased-fog #t
+aspect-ratio 1.333333
 # Set this true to have all CollisionTraversers in the world respect the previous frame's transform (position) for a given object when determining motion for collision tests.
 respect-prev-transform 1
 # Specifies the maximum amount of time that should be consumed by a single call to Decompressor::run().
