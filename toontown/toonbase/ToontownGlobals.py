@@ -171,6 +171,7 @@ LullabyLane = 9100
 PajamaPlace = 9200
 ToonHall = 2513
 HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
+HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace, BonkersBoulevard),
  DonaldsDock: (BarnacleBoulevard, SeaweedStreet, LighthouseLane),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
  MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
