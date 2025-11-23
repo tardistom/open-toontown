@@ -32,7 +32,7 @@ from toontown.racing.KartDNA import *
 from toontown.racing import RaceGlobals
 from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA
-from toontown.toon import Experience~
+from toontown.toon import Experience 
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 
@@ -321,6 +321,15 @@ class ToggleRun(MagicWord):
         from direct.showbase.InputStateGlobal import inputState
         inputState.set('debugRunning', not inputState.isSet('debugRunning'))
         return "Run mode has been toggled."
+
+
+class GetZone(MagicWord):
+    aliases = ["getzoneid"]
+    desc = "Returns the target's zone ID."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        return "{}'s zone ID is {}.".format(toon.getName(), str(toon.zoneId))
 
 
 """    
@@ -626,6 +635,27 @@ class SetPinkSlips(MagicWord):
         return f"Gave {toon.getName()} {args[0]} pink slips!" 
 
 
+class UnlockEmotes(MagicWord):
+    aliases = ["emotes"]
+    desc = "Unlock all of the target's emotes."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        emoteAccess = list(toon.getEmoteAccess())
+
+        # Old version of command made emote access list shorter. Let's fix that.
+        if len(emoteAccess) < len(OTPLocalizer.EmoteFuncDict):
+            emoteAccess = [0] * len(OTPLocalizer.EmoteFuncDict)
+
+        for emoteId in OTPLocalizer.EmoteFuncDict.values():
+            if emoteId > 24 or emoteId in [16, 17, 18, 19]:
+                continue
+            emoteAccess[emoteId] = 1
+
+        toon.b_setEmoteAccess(emoteAccess)
+        return "Unlocked all of {}'s emotes.".format(toon.getName())
+    
+    
 """    
 *********************************** COG SPAWNS ***********************************
 """
@@ -785,6 +815,27 @@ class ClearAccessories(MagicWord):
         return "Cleared the target's accessories."
     
 
+class SetCEIndex(MagicWord):
+    aliases = ["setce", "ce", "cheesyeffect"]
+    desc = "Set Cheesy Effect of the target."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("index", int, True), ("zoneId", int, False, 0), ("duration", int, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        """Set Cheesy Effect of the target."""
+        index = args[0]
+        zoneId = args[1]
+        duration = args[2]
+
+        if not 0 <= index <= 17:
+            return "Invalid value %s specified for Cheesy Effect." % index
+        if index == 17 and (not hasattr(self.air, 'holidayManager') or not self.air.holidayManager.isHolidayRunning(ToontownGlobals.APRIL_FOOLS)):
+            return "Invalid value %s specified for Cheesy Effect." % index
+        if zoneId != 0 and not 100 < zoneId < ToontownGlobals.DynamicZonesBegin:
+            return "Invalid zoneId specified."
+        toon.b_setCheesyEffect(index, zoneId, time.time() + duration)
+
+
 class SetGM(MagicWord):
     aliases = ["icon", "seticon", "gm", "gmicon", "setgmicon"]
     desc = "Sets the GM icon on the target."
@@ -801,7 +852,26 @@ class SetGM(MagicWord):
         toon.b_setGM(0) # Reset it first, otherwise the Toon keeps the old icon, but the name still changes.
         toon.b_setGM(iconRequest)
         return f"GM icon set to {iconRequest} for {toon.getName()}"
-    
+
+
+class SetName(MagicWord):
+    aliases = ["name"]
+    desc = "Set target's name."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("name", str, True)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        nameStr = args[0]
+        oldName = toon.getName()
+
+        if not nameStr:
+            return "Cannot change %s's name to nothing!" % oldName
+        elif ":" in nameStr:
+            return "Cannot change %s's name to %s. Invalid characters specified." % (oldName, nameStr)
+
+        toon.b_setName(nameStr)
+        return "Changed %s's name to %s!" % (oldName, nameStr)
+   
 
 """    
 *********************************** EVENT MANAGEMENT ***********************************
