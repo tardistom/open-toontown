@@ -125,10 +125,15 @@ def getSuitAttack(suitName, suitLevel, attackNum = -1):
     adict['group'] = SuitAttacks[name][1]
     return adict
 
-
 SuitAttributes = SuitAttributes.SuitAttributes
                     
-
+def createLevelRangeDict():
+    LevelRangeDict = {}
+    for cog, attribute in SuitAttributes.items():
+        low = attribute['level'] + 1
+        high = low + attribute['levelMod']
+        LevelRangeDict[cog] = (low, high)
+    return LevelRangeDict
                     
 
 ATK_TGT_UNKNOWN = 1

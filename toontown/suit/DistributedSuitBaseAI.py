@@ -3,6 +3,7 @@ from otp.avatar import DistributedAvatarAI
 from . import SuitPlannerBase, SuitBase, SuitDNA
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
+from toontown.suit import SuitHPGlobals
 
 class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.SuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitBaseAI')
@@ -47,12 +48,18 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
         self.notify.debug('Assigning level ' + str(lvl))
         if hasattr(self, 'doId'):
             self.d_setLevelDist(self.level)
-        tier = SuitBattleGlobals.getSuitTier(self.getStyleName())
+        name = self.getStyleName()
 
-        if self.getActualLevel() >= 12:
-            hp = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2) + self.getActualLevel() * 1.5
-        else:
-            hp = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2)
+        try:
+            hp = SuitHPGlobals.calculate_hp(self.getActualLevel(), name)
+        except KeyError:
+            low, high = SuitHPGlobals.SUIT_RANGES[name]
+            clampedLevel = max(low, min(self.getActualLevel(), high))
+            self.notify.warning(
+                f'setLevel: requested level {self.getActualLevel()} invalid for {name} '
+                f'(valid range {low}-{high}), clamping to {clampedLevel}'
+            )
+            hp = SuitHPGlobals.calculate_hp(clampedLevel, name)
 
         self.maxHP = hp
         self.currHP = hp

@@ -9,6 +9,7 @@ from toontown.battle import SuitBattleGlobals
 from . import SuitTimings
 from . import SuitDNA
 from toontown.toonbase import TTLocalizer
+from toontown.suit import SuitHPGlobals
 TIME_BUFFER_PER_WPT = 0.25
 TIME_DIVISOR = 100
 DISTRIBUTE_TASK_CREATION = 0
@@ -51,11 +52,22 @@ class SuitBase:
          'dept': self.getStyleDept(),
          'level': self.getActualLevel()}
         self.setDisplayName(nameWLevel)
-        tier = SuitBattleGlobals.getSuitTier(self.getStyleName())
-        if self.getActualLevel() >= 12:
-            self.maxHP = (float(self.getActualLevel()) + (tier + 1)) * (float(self.getActualLevel()) + 2) + float(self.getActualLevel()) * 1.5
-        else:
-            self.maxHP = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2)
+        name = self.getStyleName()
+        print(name, self.getActualLevel())
+        try:
+            self.maxHP = SuitHPGlobals.calculate_hp(self.getActualLevel(), name)
+        except KeyError:
+            low, high = SuitHPGlobals.SUIT_RANGES[name]
+            clampedLevel = max(low, min(self.getActualLevel(), high))
+            self.notify.warning(
+                f'setLevel: requested level {self.getActualLevel()} invalid for {name} '
+                f'(valid range {low}-{high}), clamping to {clampedLevel}'
+            )
+            self.maxHP = SuitHPGlobals.calculate_hp(clampedLevel, name)
+        #if self.getActualLevel() >= 12:
+        #    self.maxHP = (float(self.getActualLevel()) + (tier + 1)) * (float(self.getActualLevel()) + 2) + float(self.getActualLevel()) * 1.5
+        #else:
+        #    self.maxHP = (self.getActualLevel() + (tier + 1)) * (self.getActualLevel() + 2)
         self.currHP = self.maxHP
 
     def getSkelecog(self):
