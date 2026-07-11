@@ -6,6 +6,7 @@ import random
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from otp.avatar import AvatarDNA
+from toontown.battle import SuitBattleGlobals
 notify = directNotify.newCategory('SuitDNA')
 suitHeadTypes = ['f',
  'p',
@@ -143,7 +144,16 @@ def getSuitType(name):
 
 
 def getRandomSuitType(level, rng = random):
-    return random.randint(max(level - 4, 1), min(level, 8))
+    SuitDict = SuitBattleGlobals.SuitAttributes
+    suitPool = []
+    print('Cog Level: ', level, '\nLevel Ranges')
+    for cog, data in SuitDict.items(): 
+        levelRange = SuitBattleGlobals.getLevelRange(cog)
+        if level in levelRange: 
+            suitPool.append(data['level'] + 1)
+
+    randomSuit = random.choice(suitPool)
+    return randomSuit
 
 
 def getRandomSuitByDept(dept):

@@ -1138,32 +1138,22 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
 
     def pickLevelTypeAndTrack(self, level=None, type=None, track=None):
         SuitDict = SuitBattleGlobals.SuitAttributes
+        if track == None:
+            track = SuitDNA.suitDepts[SuitBattleGlobals.pickFromFreqList(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_TRACK])]
         if level == None:
             level = random.choice(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL])
         if type == None:
-            typeChoices = list(range(max(level - 6, 1), min(level, self.MAX_SUIT_TYPES) + 1))
-            type = random.choice(typeChoices)
+            suitPool = []
+            for cog, data in SuitDict.items(): 
+                levelRange = SuitBattleGlobals.getLevelRange(cog)
+                if level in levelRange: 
+                    suitPool.append(data['level'] + 1)
+            type = random.choice(suitPool)
+            print(suitPool)
+            while type >= self.MAX_SUIT_TYPES:
+                type = random.choice(suitPool)
         else:
             level = min(max(level, type), type + 4)
-        if track == None:
-            track = SuitDNA.suitDepts[SuitBattleGlobals.pickFromFreqList(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_TRACK])]
-
-        for cog, SuitDict in SuitDict.items():
-            if level in range((SuitDict['level'] + 1), ((SuitDict['level'] + 1) + SuitDict['levelMod'])) and type == (SuitDict['level']) and track in SuitDict['track']:
-                zoneId = self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_ZONE]
-                #print(f"{SuitDict['name']}, Old Level: {level}, Zone: {zoneId}\n")
-
-                suitHoodLvls = self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL]
-                actualLvl = SuitDict['level'] + 1
-                maxLvl = actualLvl + SuitDict['levelMod']
-
-                lvlRange = list(range(actualLvl, (actualLvl + maxLvl + 1)))
-                newLvlRange = list(set(lvlRange).intersection(suitHoodLvls))
-
-                level = random.choice(newLvlRange)
-
-                #print(f"{SuitDict['name']}, New Lvl: {level}, Zone: {zoneId}\nZone Lvls: {suitHoodLvls}, Suit Lvls: {lvlRange} Lvl Potentials: {newLvlRange}\n")
-        self.notify.debug('pickLevelTypeAndTrack: %d %d %s' % (level, type, track))
         return level, type, track
 
     @classmethod
