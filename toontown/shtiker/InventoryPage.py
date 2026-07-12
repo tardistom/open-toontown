@@ -22,7 +22,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         self.trackProgress = DirectWaitBar(parent=self.trackInfo, pos=(0, 0, -0.2), relief=DGG.SUNKEN, frameSize=(-0.6,
          0.6,
          -0.1,
-         0.1), borderWidth=(0.025, 0.025), scale=1.1, frameColor=(0.4, 0.6, 0.4, 1), barColor=(0.9, 1, 0.7, 1), text='0/0', text_scale=0.15, text_fg=(0.05, 0.14, 0.4, 1), text_align=TextNode.ACenter, text_pos=(0, -0.22), text_font=ToontownGlobals.getSchtickerFont())
+         0.1), borderWidth=(0.025, 0.025), scale=1.1, frameColor=(0.4, 0.6, 0.4, 1), barColor=(0.9, 1, 0.7, 1), text='0/0', text_scale=0.15, text_fg=(0.05, 0.14, 0.4, 1), text_align=TextNode.ACenter, text_pos=(0, -0.22))
         self.trackProgress.hide()
         jarGui = loader.loadModel('phase_3.5/models/gui/jar_gui')
         self.moneyDisplay = DirectLabel(parent=self, relief=None, pos=(0.55, 0, -0.5), scale=0.8, text=str(base.localAvatar.getMoney()), text_scale=0.18, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=jarGui.find('**/Jar'), text_font=ToontownGlobals.getSchtickerFont())
@@ -82,7 +82,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
             self.trackProgress['value'] = curExp
             if curExp >= ToontownBattleGlobals.regMaxSkill:
                 str = TTLocalizer.InventoryPageTrackFull % trackName
-                trackText = TTLocalizer.InventoryUberTrackExp % {'nextExp': ToontownBattleGlobals.MaxSkill - curExp}
+                trackText = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - ToontownBattleGlobals.regMaxSkill) / ToontownBattleGlobals.UberSkill) * 100)}
                 self.trackProgress['range'] = ToontownBattleGlobals.UberSkill
                 uberCurrExp = curExp - ToontownBattleGlobals.regMaxSkill
                 self.trackProgress['value'] = uberCurrExp

@@ -541,7 +541,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     button = self.buttons[track][level]
                     if self.itemIsUsable(track, level):
                         button.show()
-                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
+                        if self.numItem(track, level) <= 0:
                             self.makeUnpressable(button, track, level)
                         else:
                             self.makeDeletePressable(button, track, level)
@@ -564,7 +564,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     button = self.buttons[track][level]
                     if self.itemIsUsable(track, level):
                         button.show()
-                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
+                        if self.numItem(track, level) <= 0:
                             self.makeUnpressable(button, track, level)
                         else:
                             self.makeDeletePressable(button, track, level)
@@ -601,7 +601,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     button = self.buttons[track][level]
                     if self.itemIsUsable(track, level):
                         button.show()
-                        if self.numItem(track, level) <= 0 or level >= UBER_GAG_LEVEL_INDEX:
+                        if self.numItem(track, level) <= 0:
                             self.makeUnpressable(button, track, level)
                         else:
                             self.makeDeletePressable(button, track, level)
@@ -719,7 +719,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     if self.itemIsUsable(track, level):
                         button.show()
                         unpaid = not base.cr.isPaid()
-                        if self.numItem(track, level) >= self.getMax(track, level) or totalProps == maxProps or unpaid and gagIsPaidOnly(track, level) or level > LAST_REGULAR_GAG_LEVEL:
+                        if self.numItem(track, level) >= self.getMax(track, level) or totalProps == maxProps or unpaid and gagIsPaidOnly(track, level):
                             if gagIsPaidOnly(track, level):
                                 self.makeDisabledPressable(button, track, level)
                             elif unpaid and gagIsVelvetRoped(track, level):
@@ -772,7 +772,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     if self.itemIsUsable(track, level):
                         button.show()
                         unpaid = not base.cr.isPaid()
-                        if self.numItem(track, level) >= self.getMax(track, level) or totalProps == maxProps or unpaid and gagIsPaidOnly(track, level) or level > LAST_REGULAR_GAG_LEVEL:
+                        if self.numItem(track, level) >= self.getMax(track, level) or totalProps == maxProps or unpaid and gagIsPaidOnly(track, level):
                             if gagIsPaidOnly(track, level):
                                 self.makeDisabledPressable(button, track, level)
                             elif unpaid and gagIsVelvetRoped(track, level):
@@ -1020,6 +1020,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         return (curSkill, retVal)
 
     def makePressable(self, button, track, level):
+        print(f"PRESSABLE t={track} l={level}")
         organicBonus = self.toon.checkGagBonus(track, level)
         propBonus = self.checkPropBonus(track)
         bonus = organicBonus or propBonus
@@ -1035,6 +1036,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             button.configure(image_color=self.PressableImageColor)
 
     def makeDisabledPressable(self, button, track, level):
+        print(f"DISABLED  t={track} l={level}")
         organicBonus = self.toon.checkGagBonus(track, level)
         propBonus = self.checkPropBonus(track)
         bonus = organicBonus or propBonus
@@ -1061,6 +1063,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             button.configure(image_color=self.NoncreditPressableImageColor)
 
     def makeDeletePressable(self, button, track, level):
+        print(f"UNPRESS   t={track} l={level}")
         organicBonus = self.toon.checkGagBonus(track, level)
         propBonus = self.checkPropBonus(track)
         bonus = organicBonus or propBonus
@@ -1111,7 +1114,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryGuestExp
         elif curExp >= regMaxSkill:
             self.trackBars[trackIndex]['range'] = UberSkill
-            self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': MaxSkill - curExp}
+            self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - regMaxSkill) / UberSkill) * 100)}
         else:
             self.trackBars[trackIndex]['range'] = nextExp
             self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryTrackExp % {'curExp': curExp,
@@ -1149,7 +1152,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     self.trackBars[track]['range'] = nextExp
                     self.trackBars[track]['text'] = TTLocalizer.InventoryGuestExp
                 elif curExp >= regMaxSkill:
-                    self.trackBars[track]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': MaxSkill - curExp}
+                    self.trackBars[track]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - regMaxSkill) / UberSkill) * 100)}
                     self.trackBars[track]['value'] = curExp - regMaxSkill
                 else:
                     self.trackBars[track]['text'] = TTLocalizer.InventoryTrackExp % {'curExp': curExp,

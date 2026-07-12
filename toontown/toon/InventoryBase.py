@@ -100,7 +100,7 @@ class InventoryBase(DirectObject.DirectObject):
         if hasattr(self.toon, 'experience') and hasattr(self.toon.experience, 'getExpLevel'):
             if self.toon.experience.getExpLevel(track) >= level and self.toon.hasTrackAccess(track):
                 if self.numItem(track, level) <= max - amount:
-                    if self.totalProps + amount <= self.toon.getMaxCarry() or level > LAST_REGULAR_GAG_LEVEL:
+                    if self.totalProps + amount <= self.toon.getMaxCarry():
                         if not (unpaid and Levels[track][level] > UnpaidMaxSkills[track]):
                             self.inventory[track][level] += amount
                             self.totalProps += amount
@@ -212,8 +212,10 @@ class InventoryBase(DirectObject.DirectObject):
                     if simbase.config.GetBool('want-ban-gagtrack', False):
                         simbase.air.banManager.ban(self.toon.doId, dislId, commentStr)
                     return 0
+                """"
                 if level > LAST_REGULAR_GAG_LEVEL and tempInv[track][level] > self.inventory[track][level] or allowUber:
-                    return 0
+                   return 0
+                """
 
         return 1
 

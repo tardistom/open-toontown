@@ -15,6 +15,7 @@ from toontown.ai import DatabaseObject
 from toontown.toon import DistributedToonAI
 from toontown.toon import InventoryBase
 from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals
 import random
 from toontown.toon import NPCToons
 
@@ -1358,7 +1359,17 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                                 self.notify.warning('generating movie for non-existant gag track %s level %s! avId: %s' % (track, level, toonId))
                             if not toon.hasTrackAccess(track):
                                 self.air.writeServerEvent('suspicious', toonId, 'Toon trying to throw gag on track they do not have access to (gag track %s level %s)' % (track, level))
+                            # Level 7 spent, reset exp.
+                            if level == ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1:
+                                resetExp = ToontownBattleGlobals.Levels[track][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1]
+                                toon.experience.setExp(track, resetExp)
+                                toon.b_setExperience(toon.experience.makeNetString())
+                                # Syncs start-of-battle snapshot.
+                                if toonId in self.toonExp:
+                                    self.toonExp[toonId][track] = resetExp
+
                             toon.d_setInventory(toon.inventory.makeNetString())
+
                     hps = attack[TOON_HP_COL]
                     if track == SOS:
                         self.notify.debug('toon: %d called for help' % toonId)

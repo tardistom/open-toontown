@@ -137,12 +137,13 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
             if toon.inventory.numItem(i, uberIndex) > 0:
                 hasUber = 1
             if totalExp >= needed or totalExp >= ToontownBattleGlobals.MaxSkill:
-                if toon.inventory.totalProps < toon.getMaxCarry() and not hasUber:
-                    uberLevel = ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1
-                    toon.inventory.addItem(i, uberLevel)
-                    toon.experience.setExp(i, ToontownBattleGlobals.Levels[i][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1])
-                else:
-                    toon.experience.setExp(i, ToontownBattleGlobals.MaxSkill)
+                toon.experience.setExp(i, ToontownBattleGlobals.MaxSkill)
+                #if toon.inventory.totalProps < toon.getMaxCarry() and not hasUber:
+                #    uberLevel = ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1
+                #    toon.inventory.addItem(i, uberLevel)
+                #    toon.experience.setExp(i, ToontownBattleGlobals.Levels[i][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1])
+                #else:
+
             else:
                 if exp > 0:
                     newGagList = toon.experience.getNewGagIndexList(i, exp)
