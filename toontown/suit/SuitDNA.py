@@ -146,7 +146,6 @@ def getSuitType(name):
 def getRandomSuitType(level, rng = random):
     SuitDict = SuitBattleGlobals.SuitAttributes
     suitPool = []
-    print('Cog Level: ', level, '\nLevel Ranges')
     for cog, data in SuitDict.items(): 
         levelRange = SuitBattleGlobals.getLevelRange(cog)
         if level in levelRange: 

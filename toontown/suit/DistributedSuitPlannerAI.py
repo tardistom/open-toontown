@@ -1149,7 +1149,6 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                 if level in levelRange: 
                     suitPool.append(data['level'] + 1)
             type = random.choice(suitPool)
-            #print(suitPool)
             while type >= self.MAX_SUIT_TYPES:
                 type = random.choice(suitPool)
         else:
