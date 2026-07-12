@@ -91,7 +91,7 @@ Levels = [[0,
   6000,
   10000]]
 regMaxSkill = 10000
-UberSkill = 20
+UberSkill = 500
 MaxSkill = UberSkill + regMaxSkill
 UnpaidMaxSkills = [Levels[0][1] - 1,
  Levels[1][1] - 1,
@@ -100,7 +100,7 @@ UnpaidMaxSkills = [Levels[0][1] - 1,
  Levels[4][4] - 1,
  Levels[5][4] - 1,
  Levels[6][1] - 1]
-ExperienceCap = 200
+ExperienceCap = 500
 
 def gagIsPaidOnly(track, level):
     return Levels[track][level] > UnpaidMaxSkills[track]
@@ -648,7 +648,7 @@ AvPropDamage = ((((8, 10), (Levels[0][0], Levels[0][1])),
   ((45, 50), (Levels[1][3], Levels[1][4])),
   ((60, 70), (Levels[1][4], Levels[1][5])),
   ((90, 180), (Levels[1][5], Levels[1][6])),
-  ((180, 195), (Levels[1][6], MaxSkill))),
+  ((98, 195), (Levels[1][6], MaxSkill))),
  (((0, 0), (0, 0)),
   ((0, 0), (0, 0)),
   ((0, 0), (0, 0)),

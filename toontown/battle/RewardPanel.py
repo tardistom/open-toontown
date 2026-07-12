@@ -241,7 +241,7 @@ class RewardPanel(DirectFrame):
                     trackBar['range'] = nextExp
                     uberCurrExp = curExp - ToontownBattleGlobals.regMaxSkill
                     trackBar['value'] = uberCurrExp
-                    trackBar['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - ToontownBattleGlobals.regMaxSkill) / ToontownBattleGlobals.UberSkill) * 100)}
+                    trackBar['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': math.floor(((curExp - ToontownBattleGlobals.regMaxSkill) / ToontownBattleGlobals.UberSkill) * 100)}
                 else:
                     nextExp = self.getNextExpValue(curExp, i)
                     trackBar['range'] = nextExp
@@ -262,7 +262,7 @@ class RewardPanel(DirectFrame):
         elif newValue >= ToontownBattleGlobals.regMaxSkill:
             newValue = newValue - ToontownBattleGlobals.regMaxSkill
             nextExp = self.getNextExpValueUber(newValue, track)
-            trackBar['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': round((newValue / ToontownBattleGlobals.UberSkill) * 100)}
+            trackBar['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': math.floor((newValue / ToontownBattleGlobals.UberSkill) * 100)}
         else:
             trackBar['text'] = '%s/%s' % (newValue, nextExp)
         trackBar['range'] = nextExp

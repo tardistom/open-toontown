@@ -533,7 +533,37 @@ class Quests(MagicWord):
         else:
             return "Valid commands: \"finish\""
 
+class SetGagExp(MagicWord):
+    aliases = ["exp", "setexp", "skill"]
+    desc = "Sets the target's experience on a gag track."
+    advancedDesc = "This Magic Word will set the target's experience on the specified gag track to the value " \
+                   "you provide. Specify a track name " \
+                   "(toonup, trap, lure, sound, throw, squirt, drop) and an experience value."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("track", str, True), ("exp", int, True)]
 
+    def handleWord(self, invoker, avId, toon, *args):
+        track = args[0]
+        exp = args[1]
+
+        try:
+            index = ('toonup', 'trap', 'lure', 'sound', 'throw',
+                     'squirt', 'drop').index(track)
+        except ValueError:
+            return "Gag track '{}' is invalid! Use: toonup, trap, lure, sound, throw, squirt, drop.".format(track)
+
+        if not toon.getTrackAccess()[index]:
+            return "{} doesn't have access to the {} track!".format(toon.getName(), track)
+
+        if not 0 <= exp <= Experience.MaxSkill:
+            return "Can't set {}'s {} experience to {}! Specify a value between 0 and {}.".format(
+                toon.getName(), track, exp, Experience.MaxSkill)
+
+        experience = Experience.Experience(toon.getExperience(), toon)
+        experience.experience[index] = exp
+        toon.b_setExperience(experience.makeNetString())
+
+        return "{}'s {} experience has been set to {}.".format(toon.getName(), track, exp)
 """    
 ***********************   TOON INVENTORY & REWARDS *******************************
 """

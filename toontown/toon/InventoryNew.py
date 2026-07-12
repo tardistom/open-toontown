@@ -1,3 +1,4 @@
+import math
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from toontown.toonbase.ToontownBattleGlobals import *
@@ -1114,7 +1115,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryGuestExp
         elif curExp >= regMaxSkill:
             self.trackBars[trackIndex]['range'] = UberSkill
-            self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - regMaxSkill) / UberSkill) * 100)}
+            self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': math.floor(((curExp - regMaxSkill) / UberSkill) * 100)}
         else:
             self.trackBars[trackIndex]['range'] = nextExp
             self.trackBars[trackIndex]['text'] = TTLocalizer.InventoryTrackExp % {'curExp': curExp,
@@ -1152,7 +1153,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                     self.trackBars[track]['range'] = nextExp
                     self.trackBars[track]['text'] = TTLocalizer.InventoryGuestExp
                 elif curExp >= regMaxSkill:
-                    self.trackBars[track]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - regMaxSkill) / UberSkill) * 100)}
+                    self.trackBars[track]['text'] = TTLocalizer.InventoryUberTrackExp % {'nextExp': math.floor(((curExp - regMaxSkill) / UberSkill) * 100)}
                     self.trackBars[track]['value'] = curExp - regMaxSkill
                 else:
                     self.trackBars[track]['text'] = TTLocalizer.InventoryTrackExp % {'curExp': curExp,

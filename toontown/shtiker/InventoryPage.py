@@ -1,3 +1,4 @@
+import math
 from . import ShtikerPage
 from toontown.toonbase import ToontownBattleGlobals
 from direct.gui.DirectGui import *
@@ -82,7 +83,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
             self.trackProgress['value'] = curExp
             if curExp >= ToontownBattleGlobals.regMaxSkill:
                 str = TTLocalizer.InventoryPageTrackFull % trackName
-                trackText = TTLocalizer.InventoryUberTrackExp % {'nextExp': round(((curExp - ToontownBattleGlobals.regMaxSkill) / ToontownBattleGlobals.UberSkill) * 100)}
+                trackText = TTLocalizer.InventoryUberTrackExp % {'nextExp': math.floor(((curExp - ToontownBattleGlobals.regMaxSkill) / ToontownBattleGlobals.UberSkill) * 100)}
                 self.trackProgress['range'] = ToontownBattleGlobals.UberSkill
                 uberCurrExp = curExp - ToontownBattleGlobals.regMaxSkill
                 self.trackProgress['value'] = uberCurrExp
